@@ -21,10 +21,10 @@ block_substatement: (block_start_statement | block_shape_statement);
 block_start_statement: START COLON value COMMA value;
 block_shape_statement: SHAPE COLON NEWLINE? (shape_row+ | variable);
 
-loop_statement: FOR variable COLON value TO value OPENCURLY in_loop_statement+ NEWLINE* CLOSECURLY; 
+loop_statement: FOR variable COLON value TO value OPENCURLY NEWLINE* in_loop_statement+ NEWLINE* CLOSECURLY; 
 in_loop_statement: (assignment_statement | block_statement | if_statement); // Allow nested loops?
 
-if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY in_if_statement+ NEWLINE* CLOSECURLY;
+if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* in_if_statement+ NEWLINE* CLOSECURLY;
 in_if_statement : (assignment_statement | block_statement);
 condition: expression comparator expression;
 expression: (value (operator value)*); // Not allowing parentesses atm 
