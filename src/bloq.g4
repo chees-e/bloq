@@ -4,9 +4,9 @@
 
 /*** Commands ***\
 
-antlr4 .\test.g4
-javac test*.java
-grun test program -gui
+antlr4 .\bloq.g4
+javac bloq*.java
+grun bloq program -gui
 
 canvas: 100, 100
 
