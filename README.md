@@ -123,7 +123,7 @@ define name(a, b) {
 Calling the same function with arguments 1 and 2:
 
 ```
-name(1, 2)
+call name(1, 2)
 ```
 
 ---
