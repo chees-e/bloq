@@ -54,7 +54,7 @@ shape_assignment: variable COLON NEWLINE shape_row+;
 function_statement: (define_function | call_function);
 define_function: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* (in_function_statement NEWLINE+)+ CLOSECURLY;
 call_function: CALL variable OPENBRACKET args CLOSEBRACKET;
-in_function_statement: (block_statement | loop_statement | call_function); // allow calling function in definition
+in_function_statement: (block_statement | loop_statement | call_function| if_statement); // allow calling function in definition
 
 block_statement: BLOCK COLON variable (NEWLINE block_substatement)*;
 block_substatement: (block_start_statement | block_shape_statement);
