@@ -42,7 +42,7 @@ for i : 1 to 10 {
 \****************/
 
 // Parser
-grammar mapper;
+grammar bloq;
 program: statement+;
 statement: ((assignment_statement | function_statement | block_statement | loop_statement | if_statement) NEWLINE+);
 
@@ -51,7 +51,7 @@ canvas_assignment: CANVAS COLON NUMBER COMMA NUMBER;
 simple_assignment: variable COLON (variable | NUMBER);
 shape_assignment: variable COLON NEWLINE shape_row+;
 
-function_statement: (define_function | call_function | if_statement);
+function_statement: (define_function | call_function);
 define_function: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* (in_function_statement NEWLINE+)+ CLOSECURLY;
 call_function: CALL variable OPENBRACKET args CLOSEBRACKET;
 in_function_statement: (block_statement | loop_statement | call_function); // allow calling function in definition
