@@ -104,15 +104,11 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     }
 
     @Override public BlockStatement visitBlock_statement(bloqParser.Block_statementContext ctx) {
-        List<BlockExtraStatement> extra = new ArrayList<>();
         List<BlockStartStatement> start = new ArrayList<>();
         List<BlockShapeStatement> shape = new ArrayList<>();
 
-        Variable name = visitVariable(ctx.variable());
+        Args names = visitArgs(ctx.args());
 
-        for (bloqParser.Block_extra_statementContext c: ctx.block_extra_statement()) {
-            extra.add(visitBlock_extra_statement(c));
-        }
         for (bloqParser.Block_start_statementContext c: ctx.block_start_statement()) {
             start.add(visitBlock_start_statement(c));
         }
@@ -120,7 +116,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
             shape.add(visitBlock_shape_statement(c));
         }
 
-        return new BlockStatement(name, extra, start, shape);
+        return new BlockStatement(names, start, shape);
     }
 
     @Override public BlockStartStatement visitBlock_start_statement(bloqParser.Block_start_statementContext ctx) {
@@ -133,7 +129,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     @Override public BlockShapeStatement visitBlock_shape_statement(bloqParser.Block_shape_statementContext ctx) {
         List<ShapeRow> rows = new ArrayList<>();
         if (ctx.variable() != null) {
-            return new BlockShapeStatement(visitVariable(ctx.variable()))    // two types of constructor (shaperow/variable)
+            return new BlockShapeStatement(visitVariable(ctx.variable()));    // two types of constructor (shaperow/variable)
         } else {
             for (bloqParser.Shape_rowContext c: ctx.shape_row()) {
                 rows.add(visitShape_row(c));
@@ -142,12 +138,6 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
             return new BlockShapeStatement(rows);
         }
 
-    }
-
-    @Override public BlockExtraStatement visitBlock_extra_statement(bloqParser.Block_extra_statementContext ctx) {
-        Variable name = visitVariable(ctx.variable());
-
-        return new BlockExtraStatement(name);
     }
 
     @Override public LoopStatement visitLoop_statement(bloqParser.Loop_statementContext ctx) {

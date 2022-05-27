@@ -59,13 +59,12 @@ define_statement: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLIN
 
 // block_statement: BLOCK COLON variable (NEWLINE block_substatement)*;
 // block_substatement: (block_start_statement | block_shape_statement | block_extra_statement); // allowing multiple block initializations
-block_statement: BLOCK COLON variable (NEWLINE (block_start_statement | block_shape_statement | block_extra_statement))*;
+block_statement: BLOCK COLON args (NEWLINE (block_start_statement | block_shape_statement))*;
 
 // This way you can include multiple blocks in one pattern
 // But it also means each block must be separted by a newline
 block_start_statement: START COLON value COMMA value;
 block_shape_statement: SHAPE COLON NEWLINE? (shape_row+ | variable);
-block_extra_statement: BLOCK COLON variable;
 
 // loop_statement: FOR variable COLON value TO value OPENCURLY NEWLINE* (in_loop_statement NEWLINE+)+ CLOSECURLY;
 // in_loop_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement); // not allowing nested loops
