@@ -32,4 +32,9 @@ public class BlockShapeStatement extends Node {
     public int accept(BloqVisitor visitor, PrintWriter writer) {
         return visitor.visit(this, writer);
     }
+
+    @Override
+    public int getType(){
+        return 2;
+    }
 }
