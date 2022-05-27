@@ -41,7 +41,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
         } else {
             return null;
         }
-        return Statement(statement);
+        return new Statement(statement);
     }
 
     @Override public CanvasStatement visitCanvas_statement(bloqParser.Canvas_statementContext ctx) {
@@ -52,7 +52,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     }
 
     @Override public SimpleAssignmentStatement visitSimple_assignment_statement(bloqParser.Simple_assignment_statementContext ctx) {
-        Variable name = visitVariable(ctx.variable());
+        Variable name = visitVariable(ctx.variable()); //TODO: not sure how to correctly fix
         Expression value = visitExpression(ctx.expression());
 
         return new SimpleAssignmentStatement(name, value);
@@ -258,7 +258,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
             return null; // default
         }
 
-        return Comparator(comp);
+        return new Comparator(comp);
     }
 
     @Override public Operator visitOperator(bloqParser.OperatorContext ctx) {
