@@ -40,7 +40,18 @@ Defaults:
 Start: 0, 0  
 Shape: 1;
 
-*bitmap* can be a variable that is previously assigned a bitmap, or it can be define on the next line after Shape.
+*type* is a predefined type of block. 
+
+Supported blocktypes:
+```
+land
+water
+lava
+enemy
+```
+
+*bitmap* can be a variable that is previously assigned a bitmap, or it can be define on the next line after Shape.  
+The bitmap should be in the monochrome format, setting a bit to 1 will place a block at that location.
 
 Bitmap Structure:
 ```
@@ -51,7 +62,8 @@ slantedLine:
 1000;
 ```
 Every row (including the last) must be terminated with semicolon.  
-The top left bit will be aligned to the start location.
+The top left bit will be aligned to the start location.  
+If a block is placed at a location that's already occupied, the new block will replace the old block.
 
 #
 ### Using Variables
