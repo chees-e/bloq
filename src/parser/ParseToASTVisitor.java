@@ -2,9 +2,6 @@ package parser;
 import ast.*;
 import libs.Node;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import parser.gen.bloqParser;
 import parser.gen.bloqParserBaseVisitor;
 
@@ -17,7 +14,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
         return new Statement();
     }
 
-    @Override public Canvas_statement visitCanvas_statement(bloqParser.Canvas_statementContext ctx) { return visitChildren(ctx); }
+    @Override public CanvasStatement visitCanvas_statement(bloqParser.Canvas_statementContext ctx) { return visitChildren(ctx); }
 
     @Override public T visitSimple_assignment_statement(bloqParser.Simple_assignment_statementContext ctx) { return visitChildren(ctx); }
 //    /**

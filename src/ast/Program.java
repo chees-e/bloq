@@ -9,7 +9,7 @@ public class Program extends Node {
     };
 
     @Override
-    public void accept(BloqVisitor visitor, PrintWriter writer) {
-        return;
+    public int accept(BloqVisitor visitor, PrintWriter writer) {
+        return 0;
     }
 }
