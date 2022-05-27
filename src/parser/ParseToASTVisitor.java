@@ -14,9 +14,9 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
         return new Statement();
     }
 
-    @Override public CanvasStatement visitCanvas_statement(bloqParser.Canvas_statementContext ctx) { return visitChildren(ctx); }
+//    @Override public CanvasStatement visitCanvas_statement(bloqParser.Canvas_statementContext ctx) { return visitChildren(ctx); }
 
-    @Override public T visitSimple_assignment_statement(bloqParser.Simple_assignment_statementContext ctx) { return visitChildren(ctx); }
+//    @Override public T visitSimple_assignment_statement(bloqParser.Simple_assignment_statementContext ctx) { return visitChildren(ctx); }
 //    /**
 //     * {@inheritDoc}
 //     *
