@@ -7,16 +7,21 @@ import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.TokenStream;
-import parser.BloqLexer;
-import parser.BloqParser;
+import org.antlr.runtime.MismatchedTokenException;
+import parser.ParseToASTVisitor;
+import parser.gen.bloqLexer;
+import parser.gen.bloqParser;
+
+
+import ast.Program;
 
 import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Main {
-    public static void main(String[] args) throws IOException {
-        BloqLexer lexer = new BloqLexer(CharStreams.fromFileName("input.bloq"));
+    public static void main(String[] args) throws IOException, MismatchedTokenException {
+        bloqLexer lexer = new bloqLexer(CharStreams.fromFileName("input.bloq"));
         for (Token token : lexer.getAllTokens()) {
             System.out.println(token);
         }
@@ -24,9 +29,13 @@ public class Main {
         TokenStream tokens = new CommonTokenStream(lexer);
         System.out.println("Done tokenizing");
 
-        BloqParser parser = new BloqParser(tokens);
-        Program parsedProgram = parser.parseProgram();
+        bloqParser parser = new bloqParser(tokens);
+        ParseToASTVisitor visitor = new ParseToASTVisitor();
+        Node parsedProgram = parser.program().accept(visitor);
         System.out.println("Done parsing");
+
+        System.out.println(parser);
+
 
         PrintWriter out = new PrintWriter(new FileWriter("output.py"));
         //   Create evaluator
