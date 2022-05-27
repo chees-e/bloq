@@ -20,7 +20,7 @@ The Bloq grammar is a Antlr4 grammar that is designed to simplify the process of
 Creating a canvas with height *h*, and width *w*:   
 
 ```
-canvas h, w
+canvas: h, w
 ```
 
 Defaults:  
@@ -44,7 +44,7 @@ Shape: 1;
 
 Bitmap Structure:
 ```
-slantedLine = 
+slantedLine: 
 0001;
 0010;
 0100;
