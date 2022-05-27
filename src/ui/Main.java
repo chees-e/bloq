@@ -20,7 +20,9 @@ import java.io.IOException;
 import java.io.PrintWriter;
 
 public class Main {
-    public static void main(String[] args) throws IOException, MismatchedTokenException {
+    public static void main(String[] args) throws IOException, MismatchedTokenException, InterruptedException {
+
+
         bloqLexer lexer = new bloqLexer(CharStreams.fromFileName("input.bloq"));
         for (Token token : lexer.getAllTokens()) {
             System.out.println(token);
@@ -38,7 +40,8 @@ public class Main {
 
 
         PrintWriter out = new PrintWriter(new FileWriter("output.py"));
-        //   Create evaluator
+//        Process process = Runtime.getRuntime().exec("python ./output.py");
+// //   Create evaluator
         // parsedProgram.evaluate(out);
         // out.close();
         // System.out.println("Done evaluation");

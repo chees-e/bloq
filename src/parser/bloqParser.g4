@@ -49,13 +49,13 @@ program: statement+;
 statement: ((canvas_statement | simple_assignment_statement | shape_assignment_statement | define_statement | call_statement | block_statement | loop_statement | if_statement) NEWLINE+);
 
 canvas_statement: CANVAS COLON NUMBER COMMA NUMBER;
-simple_assignment_statement: variable COLON (variable | NUMBER);
+simple_assignment_statement: variable COLON expression;
 shape_assignment_statement: variable COLON NEWLINE shape_row+;
 
 call_statement: CALL variable OPENBRACKET args CLOSEBRACKET;
 // define_statement: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* (in_function_statement NEWLINE+)+ CLOSECURLY;
 // in_function_statement: (block_statement | loop_statement | call_statement| if_statement); // allow calling function in definition
-define_statement: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* ((block_statement | loop_statement | call_statement| if_statement) NEWLINE+)+ CLOSECURLY;
+define_statement: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | loop_statement | call_statement| if_statement) NEWLINE+)+ CLOSECURLY;
 
 // block_statement: BLOCK COLON variable (NEWLINE block_substatement)*;
 // block_substatement: (block_start_statement | block_shape_statement | block_extra_statement); // allowing multiple block initializations
@@ -74,6 +74,7 @@ loop_statement: FOR variable COLON value TO value OPENCURLY NEWLINE* ((simple_as
 // if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY;
 // in_if_statement : (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement);
 if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | call_statement) NEWLINE+)+ CLOSECURLY;
+
 condition: expression comparator expression;
 expression: (value (operator value)*); // Not allowing parentesses atm 
 
