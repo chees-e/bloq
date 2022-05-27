@@ -11,7 +11,7 @@ public class CanvasStatement extends Node {
     public CanvasStatement(int h, int w) {
         this.height = h;
         this.width = w;
-    };
+    }
 
     public int getHeight() {
         return this.height;

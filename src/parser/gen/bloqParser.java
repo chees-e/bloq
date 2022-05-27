@@ -2,14 +2,17 @@
 
 package parser.gen;
 
-import org.antlr.v4.runtime.atn.*;
-import org.antlr.v4.runtime.dfa.DFA;
 import org.antlr.v4.runtime.*;
-import org.antlr.v4.runtime.misc.*;
-import org.antlr.v4.runtime.tree.*;
+import org.antlr.v4.runtime.atn.ATN;
+import org.antlr.v4.runtime.atn.ATNDeserializer;
+import org.antlr.v4.runtime.atn.ParserATNSimulator;
+import org.antlr.v4.runtime.atn.PredictionContextCache;
+import org.antlr.v4.runtime.dfa.DFA;
+import org.antlr.v4.runtime.tree.ParseTreeListener;
+import org.antlr.v4.runtime.tree.ParseTreeVisitor;
+import org.antlr.v4.runtime.tree.TerminalNode;
+
 import java.util.List;
-import java.util.Iterator;
-import java.util.ArrayList;
 
 @SuppressWarnings({"all", "warnings", "unchecked", "unused", "cast"})
 public class bloqParser extends Parser {
@@ -389,7 +392,12 @@ public class bloqParser extends Parser {
 			if ( visitor instanceof bloqParserVisitor ) return ((bloqParserVisitor<? extends T>)visitor).visitSimple_assignment_statement(this);
 			else return visitor.visitChildren(this);
 		}
-	}
+
+        public ExpressionContext expression() {
+            //TODO: I am unsure about this implementation
+            return null;
+        }
+    }
 
 	public final Simple_assignment_statementContext simple_assignment_statement() throws RecognitionException {
 		Simple_assignment_statementContext _localctx = new Simple_assignment_statementContext(_ctx, getState());
@@ -624,7 +632,17 @@ public class bloqParser extends Parser {
 			if ( visitor instanceof bloqParserVisitor ) return ((bloqParserVisitor<? extends T>)visitor).visitDefine_statement(this);
 			else return visitor.visitChildren(this);
 		}
-	}
+
+        public Iterable<? extends Simple_assignment_statementContext> simple_assignment_statement() {
+            //TODO: Need to implement
+            return null;
+        }
+
+        public Iterable<? extends Shape_assignment_statementContext> shape_assignment_statement() {
+            //TODO: Need to implement
+            return null;
+        }
+    }
 
 	public final Define_statementContext define_statement() throws RecognitionException {
 		Define_statementContext _localctx = new Define_statementContext(_ctx, getState());
