@@ -14,6 +14,9 @@ public class PyEvaluator implements BloqVisitor{
     private final String Start = """
 from PIL import Image
 import os
+block_size = 10
+width = 100
+height = 100
 def _generate_blocks():
     try:
         os.mkdir("./assets/")
@@ -24,7 +27,7 @@ def _generate_blocks():
     Image.new("RGB", (block_size, block_size), (255, 0, 0)).save("./assets/lava.png")
     Image.new("RGB", (block_size, block_size), (0, 0, 0)).save("./assets/enemy.png")
 def _block(blocks, x=0, y=0, shape=["1"], canvas=Image.new("RGB", (width * block_size, height * block_size))):
-    global block_size;
+    global block_size
     block_lst = []
     for b in blocks:
         block_lst.append(Image.open(b))
@@ -35,9 +38,6 @@ def _block(blocks, x=0, y=0, shape=["1"], canvas=Image.new("RGB", (width * block
             curx = (x + col) * block_size
             cury = (y + row) * block_size
             canvas.paste(block_lst[int(shape[row][col]) - 1], (curx, cury))
-block_size = 10
-width = 100
-height = 100
 land = "./assets/land.png"
 water = "./assets/water.png"
 lava = "./assets/lava.png"
@@ -142,6 +142,7 @@ while True:
         printWriter.write("(");
         d.getArgs().accept(this, printWriter);
         printWriter.write("):");
+        printWriter.println();
 
         this.IndentLevel = this.IndentLevel + 1;
 

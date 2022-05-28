@@ -105,8 +105,21 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
 
     @Override public BlockStatement visitBlock_statement(bloqParser.Block_statementContext ctx) {
         // updated so it only gets 1 start and 1 shape
-        BlockStartStatement start = visitBlock_start_statement(ctx.block_start_statement(ctx.block_start_statement().size()-1));
-        BlockShapeStatement shape = visitBlock_shape_statement(ctx.block_shape_statement(ctx.block_shape_statement().size()-1));
+        int start_size = ctx.block_start_statement().size();
+        int shape_size = ctx.block_shape_statement().size();
+        BlockStartStatement start;
+        BlockShapeStatement shape;
+
+        if (start_size > 0) {
+            start = visitBlock_start_statement(ctx.block_start_statement(start_size-1));
+        } else {
+            start = null;
+        }
+        if (shape_size > 0) {
+            shape = visitBlock_shape_statement(ctx.block_shape_statement(shape_size-1));
+        } else {
+            shape = null;
+        }
 
         Args names = visitArgs(ctx.args());
 
