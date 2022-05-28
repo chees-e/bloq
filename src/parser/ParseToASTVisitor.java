@@ -128,7 +128,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
 
     @Override public BlockStartStatement visitBlock_start_statement(bloqParser.Block_start_statementContext ctx) {
         Value x = visitValue(ctx.value(0));
-        Value y = visitValue(ctx.value(1));
+        Value y = visitValue(ctx.value(1)); // cannot be expressions
 
         return new BlockStartStatement(x, y);
     }

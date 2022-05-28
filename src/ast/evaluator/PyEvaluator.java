@@ -52,6 +52,9 @@ canvas.show()
 while True:
     pass
 """;// TODO, save maybe?
+
+    private final Boolean log = true;
+
     private void AddIndent(int level, PrintWriter printWriter) {
         for (int i = 0; i < level; i++) {
             printWriter.write("    "); // 4 space indent
@@ -62,6 +65,9 @@ while True:
 
     @Override
     public int visit(Program p, PrintWriter printWriter) {
+        if (log) {
+            System.out.println("Visited program");
+        }
         this.IndentLevel = 0;
 
         printWriter.write(this.Start);
@@ -78,6 +84,9 @@ while True:
     // Is this neccessary? TODO
     @Override
     public int visit(Statement s, PrintWriter printWriter) {
+        if (log) {
+            System.out.println("Visited statement");
+        }
         Node statement = s.getStatement();
 
         statement.accept(this, printWriter);
