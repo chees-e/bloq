@@ -39,6 +39,7 @@ public class Main extends Application{
     public void start(Stage stage) throws IOException, MismatchedTokenException {
         window = stage;
         window.setTitle("bloq");
+        window.getIcons().add(new Image("file:src/ui/images/bloq.png"));
         editorScene();
 //         todo: move all these to the button event
 //        bloqLexer lexer = new bloqLexer(CharStreams.fromFileName("input.bloq"));
@@ -69,7 +70,6 @@ public class Main extends Application{
         loader.setLocation(getClass().getResource("editor.fxml"));
         Parent root = loader.load();
         EditorController controller = loader.getController();
-        controller.init();
         scene = new Scene(root);
         scene.getStylesheets().add(getClass().getResource("editor.css").toExternalForm());
         window.setScene(scene);

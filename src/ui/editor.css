@@ -7,6 +7,10 @@
 }
 
 #rightPane {
+    -fx-background-image: url('images/bloq.png');
+    -fx-background-repeat: no-repeat;
+    -fx-background-position: center;
+    -fx-background-size: 400px;
     -fx-background-color: none;
 }
 

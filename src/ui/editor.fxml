@@ -17,9 +17,9 @@
                </children>
             </AnchorPane>
           <AnchorPane fx:id="rightPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="500.0">
-               <children>
-                  <ImageView fx:id="outputImageView" fitHeight="600.0" fitWidth="495.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
-               </children>
+<!--               <children>-->
+<!--                  <ImageView fx:id="outputImageView" fitHeight="600.0" fitWidth="495.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />-->
+<!--               </children>-->
             </AnchorPane>
         </items>
       </SplitPane>

@@ -6,6 +6,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
+import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.io.PrintWriter;
 
+import javafx.scene.layout.*;
 import libs.Node;
 import org.antlr.v4.runtime.CharStreams;
 import org.antlr.v4.runtime.CommonTokenStream;
@@ -36,19 +38,31 @@ public class EditorController {
     @FXML
     private ImageView outputImageView;
 
-    public void init() {
-
-    }
+    @FXML
+    private AnchorPane rightPane;
 
     @FXML
     public void runButtonClicked(ActionEvent event) {
-
         try {
             String input = editorTextArea.getText();
             System.out.println(input);
+
+            // todo: move parsing logic to here
+
+            // referred to https://stackoverflow.com/questions/26712643/javafx-imageview-set-center-image  and
+            // official documentation https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/BackgroundSize.html
+            // to set the image as the background and resizable with window resizing
             File imageFile = new File("output.png");
-            BufferedImage image = ImageIO.read(imageFile);
-            outputImageView.setImage(SwingFXUtils.toFXImage(image, null));
+            BufferedImage bufferedImage = ImageIO.read(imageFile);
+            Image image = SwingFXUtils.toFXImage(bufferedImage, null);
+            BackgroundSize backgroundSize = new BackgroundSize(450, 450, false, false, true, false);
+            BackgroundImage backgroundImage = new BackgroundImage(image,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundRepeat.NO_REPEAT,
+                    BackgroundPosition.CENTER,
+                    backgroundSize);
+            rightPane.setBackground(new Background(backgroundImage));
+
 
 //            bloqLexer lexer = new bloqLexer(CharStreams.fromFileName("input.bloq"));
 //            for (Token token : lexer.getAllTokens()) {
