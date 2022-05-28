@@ -13,7 +13,7 @@
           <AnchorPane fx:id="leftPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="500.0">
                <children>
                   <Button fx:id="runButton" layoutX="470.0" layoutY="1.0" mnemonicParsing="false" onAction="#runButtonClicked" prefHeight="25.0" prefWidth="25.0" stylesheets="@editor.css" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
-                  <TextArea fx:id="editorTextArea" layoutY="27.0" prefHeight="570.0" prefWidth="495.0" stylesheets="@editor.css" text="asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="30.0" />
+                  <TextArea fx:id="editorTextArea" layoutY="27.0" prefHeight="570.0" prefWidth="495.0" stylesheets="@editor.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="30.0" />
                </children>
             </AnchorPane>
           <AnchorPane fx:id="rightPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="500.0">
