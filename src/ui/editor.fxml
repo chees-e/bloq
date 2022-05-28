@@ -6,19 +6,19 @@
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane fx:id="background" prefHeight="1000.0" prefWidth="1000.0" stylesheets="@editor.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.EditorController">
+<AnchorPane fx:id="background" prefHeight="600.0" prefWidth="1000.0" stylesheets="@editor.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.EditorController">
    <children>
-      <SplitPane dividerPositions="0.5" prefHeight="1000.0" prefWidth="1000.0">
+      <SplitPane fx:id="splitPane" dividerPositions="0.5" prefHeight="600.0" prefWidth="1000.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
         <items>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane fx:id="leftPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="500.0">
                <children>
-                  <Button fx:id="runButton" layoutX="2.0" layoutY="2.0" mnemonicParsing="false" onAction="#runButtonClicked" prefHeight="25.0" prefWidth="25.0" stylesheets="@editor.css" />
-                  <TextArea fx:id="editorTextArea" layoutX="-8.0" layoutY="37.0" minHeight="960.0" minWidth="495.0" stylesheets="@editor.css" />
+                  <Button fx:id="runButton" layoutX="470.0" layoutY="1.0" mnemonicParsing="false" onAction="#runButtonClicked" prefHeight="25.0" prefWidth="25.0" stylesheets="@editor.css" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                  <TextArea fx:id="editorTextArea" layoutY="27.0" prefHeight="570.0" prefWidth="495.0" stylesheets="@editor.css" text="asdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasdasd" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="30.0" />
                </children>
             </AnchorPane>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="160.0" prefWidth="100.0">
+          <AnchorPane fx:id="rightPane" minHeight="0.0" minWidth="0.0" prefHeight="600.0" prefWidth="500.0">
                <children>
-                  <ImageView fx:id="outputImageView" fitHeight="1000.0" fitWidth="495.0" layoutX="1.0" layoutY="-1.0" pickOnBounds="true" preserveRatio="true" />
+                  <ImageView fx:id="outputImageView" fitHeight="600.0" fitWidth="495.0" pickOnBounds="true" preserveRatio="true" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
                </children>
             </AnchorPane>
         </items>
