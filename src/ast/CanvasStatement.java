@@ -8,7 +8,7 @@ public class CanvasStatement extends Node {
     private final int height;
     private final int width;
 
-    public CanvasStatement(int h, int w) {
+    public CanvasStatement(int w, int h) {
         this.height = h;
         this.width = w;
     }

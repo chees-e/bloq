@@ -6,15 +6,15 @@ import libs.Node;
 import java.io.PrintWriter;
 
 public class ShapeRow extends Node {
-    private final int shaperow;
+    private final String shaperow;
 
-    public ShapeRow(int shaperow){
+    public ShapeRow(String shaperow){
         this.shaperow = shaperow;
     }
 
-    public int getShaperow() {
+    public String getShaperow() {
         return shaperow;
-    }
+    } // string because we need to preserve the zeros
 
     @Override
     public int accept(BloqVisitor visitor, PrintWriter writer) {

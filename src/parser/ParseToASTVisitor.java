@@ -104,17 +104,11 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     }
 
     @Override public BlockStatement visitBlock_statement(bloqParser.Block_statementContext ctx) {
-        List<BlockStartStatement> start = new ArrayList<>();
-        List<BlockShapeStatement> shape = new ArrayList<>();
+        // updated so it only gets 1 start and 1 shape
+        BlockStartStatement start = visitBlock_start_statement(ctx.block_start_statement(ctx.block_start_statement().size()-1));
+        BlockShapeStatement shape = visitBlock_shape_statement(ctx.block_shape_statement(ctx.block_shape_statement().size()-1));
 
         Args names = visitArgs(ctx.args());
-
-        for (bloqParser.Block_start_statementContext c: ctx.block_start_statement()) {
-            start.add(visitBlock_start_statement(c));
-        }
-        for (bloqParser.Block_shape_statementContext c: ctx.block_shape_statement()) {
-            shape.add(visitBlock_shape_statement(c));
-        }
 
         return new BlockStatement(names, start, shape);
     }
@@ -222,7 +216,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     }
 
     @Override public ShapeRow visitShape_row(bloqParser.Shape_rowContext ctx) {
-        return new ShapeRow(Integer.parseInt(ctx.NUMBER().getText()));
+        return new ShapeRow(ctx.NUMBER().getText());
     }
 
     @Override public Variable visitVariable(bloqParser.VariableContext ctx) {
