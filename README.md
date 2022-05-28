@@ -33,7 +33,7 @@ Placing a block of *type* at the location (*x*, *y*) with shape *bitmap*:
 ```
  Block: type 
  Start: x, y
- Shape: bipmap
+ Shape: bitmap
 ```
 
 Defaults:  
@@ -92,7 +92,8 @@ for i: 1 to 10 {
     statement
 }
 ```
-Statement can be either a variable assignment, a block placement, or a function call.
+Statement can be either a variable assignment, a block placement, or a function call.  
+Nest for loops are currently unsupported.
 
 #
 ### Using Conditionals
@@ -103,6 +104,7 @@ if (condition) {
 }
 ```
 Condition is a comparison between two mathematical expressions.  
+Bloq currently only supports single condition if statements.  
 Supported comparisons:  
 | Comparison | Symbol |
 | ---------- | ---------- |
@@ -159,5 +161,13 @@ for i: 0 to 9 {
 }
 ```
 ---
+
+#
+### Features coming soon
+Nested for loops  
+Multiple conditions in if statement  
+if/else statements  
+
+
 ## **Contributors**
 Charlie Li, Janie Wang, Jessica Zhan, John Pham, and Shawn Lu.
