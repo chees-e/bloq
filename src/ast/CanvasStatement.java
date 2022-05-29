@@ -8,10 +8,10 @@ public class CanvasStatement extends Node {
     private final int height;
     private final int width;
 
-    public CanvasStatement(int h, int w) {
+    public CanvasStatement(int w, int h) {
         this.height = h;
         this.width = w;
-    };
+    }
 
     public int getHeight() {
         return this.height;
@@ -25,5 +25,10 @@ public class CanvasStatement extends Node {
     @Override
     public int accept(BloqVisitor visitor, PrintWriter writer) {
         return visitor.visit(this, writer);
+    }
+
+    @Override
+    public int getType(){
+        return 6;
     }
 }

@@ -6,9 +6,23 @@ import libs.Node;
 import java.io.PrintWriter;
 
 public class ShapeRow extends Node {
+    private final String shaperow;
+
+    public ShapeRow(String shaperow){
+        this.shaperow = shaperow;
+    }
+
+    public String getShaperow() {
+        return shaperow;
+    } // string because we need to preserve the zeros
+
     @Override
     public int accept(BloqVisitor visitor, PrintWriter writer) {
+        return visitor.visit(this, writer);
+    }
 
-        return 0;
+    @Override
+    public int getType(){
+        return 16;
     }
 }

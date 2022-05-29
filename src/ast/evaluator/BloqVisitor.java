@@ -25,8 +25,6 @@ public interface BloqVisitor {
 
     int visit(BlockShapeStatement b, PrintWriter printWriter);
 
-    int visit(BlockExtraStatement b, PrintWriter printWriter);
-
     int visit(LoopStatement l, PrintWriter printWriter);
 
     int visit(IfStatement i, PrintWriter printWriter);
