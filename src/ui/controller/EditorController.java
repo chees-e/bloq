@@ -73,10 +73,16 @@ public class EditorController {
             int exitcode = process.waitFor();
             System.out.println(exitcode);
 
+            File imageFile;
+            if (exitcode != 0) {
+                imageFile = new File("error.png");
+            } else {
+                imageFile = new File("output.png");
+            }
+
             // referred to https://stackoverflow.com/questions/26712643/javafx-imageview-set-center-image  and
             // official documentation https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/BackgroundSize.html
             // to set the image as the background and resizable with window resizing
-            File imageFile = new File("output.png");
             BufferedImage bufferedImage = ImageIO.read(imageFile);
             Image image = SwingFXUtils.toFXImage(bufferedImage, null);
             BackgroundSize backgroundSize = new BackgroundSize(450, 450, false, false, true, false);
