@@ -64,12 +64,12 @@ public class EditorController {
             System.out.println(parser);
 
 
-            PrintWriter out = new PrintWriter(new FileWriter("output.py"));
+            PrintWriter out = new PrintWriter(new FileWriter("./output.py"));
             BloqVisitor eval = new PyEvaluator();
             parsedProgram.accept(eval, out);
             out.close();
             System.out.println("Done evaluation");
-            Process process = Runtime.getRuntime().exec("python3 ./output.py");
+            Process process = Runtime.getRuntime().exec("python ./output.py"); // TODO: Double check python or python3
             int exitcode = process.waitFor();
             System.out.println(exitcode);
 
