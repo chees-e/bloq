@@ -31,15 +31,16 @@ w: 100
 Placing a block of *type* at the location (*x*, *y*) with shape *bitmap*:  
 
 ```
- Block: type 
- Start: x, y
- Shape: bitmap
+ block: type 
+ start: x, y
+ shape: bitmap
 ```
 
 Defaults:  
-Start: 0, 0  
-Shape: 1;
-
+```
+start: 0, 0  
+shape: 1;
+```
 *type* is a predefined type of block. 
 
 Supported blocktypes:
@@ -51,7 +52,10 @@ enemy
 ```
 
 *bitmap* can be a variable that is previously assigned a bitmap, or it can be define on the next line after Shape.  
-The bitmap should be in the monochrome format, setting a bit to 1 will place a block at that location.
+The bitmap should be in the monochrome format, setting a bit to 1 will place a block at that location.  
+Every row (including the last) must be terminated with semicolon.  
+The top left bit will be aligned to the start location.  
+If a block is placed at a location that's already occupied, the new block will replace the old block.
 
 Bitmap Structure:
 ```
@@ -61,9 +65,41 @@ slantedLine:
 0100;
 1000;
 ```
-Every row (including the last) must be terminated with semicolon.  
-The top left bit will be aligned to the start location.  
-If a block is placed at a location that's already occupied, the new block will replace the old block.
+
+Placing a slantedline water block at 0, 0 on a 4x4 canvas will look like the following:  
+
+![bitmap1](assets/bitmap1.png)
+```
+canvas: 4, 4
+
+block: water
+start: 0, 0
+shape:
+0001;
+0010;
+0100;
+1000;
+```
+
+You can also place multiple block types in a single statement. 
+The placement of each type of block can be defined in *shape*. 
+The number associated with each block type corresponds to the position of that block type in the *block* statement, 
+starting with 1.
+
+```
+canvas: 4, 4
+
+block: water, lava, enemy
+start: 0, 0
+shape:
+0001;
+0020;
+0300;
+1000;
+```
+The code above will product the following image:
+
+![bitmap2](assets/bitmap2.png)
 
 #
 ### Using Variables
