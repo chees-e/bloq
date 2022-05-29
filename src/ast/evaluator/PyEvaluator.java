@@ -47,11 +47,9 @@ canvas = Image.new("RGB", (width * block_size, height * block_size), (255, 255, 
            
             """;
 
-    private final String End = """
-canvas.show() 
-while True:
-    pass
-""";// TODO, save maybe?
+    private String End = """
+canvas.save("./output.png")
+""";
 
     private final Boolean log = true;
 

@@ -1,5 +1,7 @@
 package ui.controller;
 
+import ast.evaluator.BloqVisitor;
+import ast.evaluator.PyEvaluator;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -45,9 +47,31 @@ public class EditorController {
     public void runButtonClicked(ActionEvent event) {
         try {
             String input = editorTextArea.getText();
-            System.out.println(input);
 
-            // todo: move parsing logic to here
+            bloqLexer lexer = new bloqLexer(CharStreams.fromString(input));
+            for (Token token : lexer.getAllTokens()) {
+                System.out.println(token);
+            }
+            lexer.reset();
+            TokenStream tokens = new CommonTokenStream(lexer);
+            System.out.println("Done tokenizing");
+
+            bloqParser parser = new bloqParser(tokens);
+            ParseToASTVisitor visitor = new ParseToASTVisitor();
+            Node parsedProgram = (Node)parser.program().accept(visitor);
+            System.out.println("Done parsing");
+
+            System.out.println(parser);
+
+
+            PrintWriter out = new PrintWriter(new FileWriter("output.py"));
+            BloqVisitor eval = new PyEvaluator();
+            parsedProgram.accept(eval, out);
+            out.close();
+            System.out.println("Done evaluation");
+            Process process = Runtime.getRuntime().exec("python3 ./output.py");
+            int exitcode = process.waitFor();
+            System.out.println(exitcode);
 
             // referred to https://stackoverflow.com/questions/26712643/javafx-imageview-set-center-image  and
             // official documentation https://docs.oracle.com/javase/8/javafx/api/javafx/scene/layout/BackgroundSize.html
@@ -63,29 +87,9 @@ public class EditorController {
                     backgroundSize);
             rightPane.setBackground(new Background(backgroundImage));
 
-
-//            bloqLexer lexer = new bloqLexer(CharStreams.fromFileName("input.bloq"));
-//            for (Token token : lexer.getAllTokens()) {
-//                System.out.println(token);
-//            }
-//            lexer.reset();
-//            TokenStream tokens = new CommonTokenStream(lexer);
-//            System.out.println("Done tokenizing");
-//
-//            bloqParser parser = new bloqParser(tokens);
-//            ParseToASTVisitor visitor = new ParseToASTVisitor();
-//            Node parsedProgram = parser.program().accept(visitor);
-//            System.out.println("Done parsing");
-//
-//            System.out.println(parser);
-//
-//            PrintWriter out = new PrintWriter(new FileWriter("output.py"));
-            //   Create evaluator
-            // parsedProgram.evaluate(out);
-            // out.close();
-            // System.out.println("Done evaluation");
         } catch (Exception e) {
-            System.out.println("Failed to write file");
+            System.out.println(e.getMessage());
         }
     }
+
 }
