@@ -1,5 +1,4 @@
-.antlr/
-./out
-.idea
+./out/
+.idea/
 ./cpsc410_project1_team9.iml
-./src/parser/gen
+./src/parser/gen/
