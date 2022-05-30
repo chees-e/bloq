@@ -261,8 +261,6 @@ canvas.save("./output.png")
 
     @Override
     public Integer visit(Condition c, PrintWriter printWriter) {
-        // TODO: check that expression is exactly 2
-
         c.getExpressions().get(0).accept(this,printWriter);
         c.getComp().accept(this, printWriter);
         c.getExpressions().get(1).accept(this,printWriter);
@@ -276,7 +274,6 @@ canvas.save("./output.png")
         List<Operator> operators = e.getOperators();
 
         values.get(0).accept(this, printWriter);
-        // TODO: Check that num of values is exactly 1 greater than operator
         for (int i = 0; i < operators.size(); i++) {
             operators.get(i).accept(this, printWriter);
             values.get(i+1).accept(this, printWriter);

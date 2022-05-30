@@ -2,6 +2,7 @@ package ui.controller;
 
 import ast.evaluator.BloqVisitor;
 import ast.evaluator.PyEvaluator;
+import ast.evaluator.VariableValidator;
 import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -63,6 +64,14 @@ public class EditorController {
 
             System.out.println(parser);
 
+            BloqVisitor validate = new VariableValidator();
+            StringBuilder sbErrors = new StringBuilder();
+            String errors = (String) parsedProgram.accept(validate, sbErrors);
+            if (errors != "") {
+                System.out.println("Static check errors: \n" + errors);
+                System.exit(1);
+            }
+            System.out.println("Done validating");
 
             PrintWriter out = new PrintWriter(new FileWriter("./output.py"));
             BloqVisitor eval = new PyEvaluator();
