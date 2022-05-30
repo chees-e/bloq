@@ -69,7 +69,7 @@ public class EditorController {
             parsedProgram.accept(eval, out);
             out.close();
             System.out.println("Done evaluation");
-            Process process = Runtime.getRuntime().exec("python ./output.py"); // TODO: Double check python or python3
+            Process process = Runtime.getRuntime().exec("python3 ./output.py"); // TODO: Double check python or python3
             int exitcode = process.waitFor();
             System.out.println(exitcode);
 

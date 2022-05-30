@@ -5,7 +5,7 @@ import libs.*;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class PyEvaluator implements BloqVisitor{
+public class PyEvaluator implements BloqVisitor<PrintWriter>{
     private int IndentLevel;
 
 
