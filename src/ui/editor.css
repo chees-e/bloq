@@ -46,6 +46,17 @@
     -fx-highlight-fill: rgb(0, 150, 256);
 }
 
+#consoleTextArea {
+    -fx-border-color: none;
+    -fx-border-radius: 0px;
+    -fx-border-width: 0px;
+    -fx-focus-color: none;
+    -fx-background-insets: 0;
+    -fx-background-color: rgb(80, 80, 80);
+    -fx-text-fill: rgb(256, 0, 0);
+    -fx-highlight-fill: rgb(0, 150, 256);
+}
+
 .text-area .content {
     -fx-background-color: rgb(80, 80, 80);
     -fx-border-color: none;
