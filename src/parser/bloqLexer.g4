@@ -4,7 +4,7 @@
 
 /*** Commands ***\
 
-antlr4 .\bloq*.g4
+antlr4 .\bloq*.g4 -visitor -o ./gen/
 javac bloq*.java
 grun bloq program -gui
 
@@ -43,6 +43,9 @@ for i : 1 to 10 {
 
 // Lexer
 lexer grammar bloqLexer;
+@header{
+package parser.gen;
+}
 CANVAS: 'canvas';
 BLOCK: 'block';
 START: 'start';

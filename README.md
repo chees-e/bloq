@@ -5,6 +5,8 @@ The Bloq grammar is a Antlr4 grammar that is designed to simplify the process of
 
 ---
 
+![Intro](https://github.students.cs.ubc.ca/CPSC410-2022S-T1/cpsc410_project1_team9/tree/ui/images/bloq_start.png?raw=true)
+
 ## **Features**
 - Variables
 - Conditionals
@@ -190,12 +192,14 @@ pattern:
 
 for i: 0 to 9 {
     if (i % 2 == 0) {
-        Block: water
+        block: water
         Start: i, 0
-        Shapen: pattern
+        Shape: pattern
     }
 }
 ```
+![example_1](https://github.students.cs.ubc.ca/CPSC410-2022S-T1/cpsc410_project1_team9/tree/ui/images/example_1.png?raw=true)
+
 ---
 
 #
