@@ -4,12 +4,16 @@ import ast.*;
 import ast.Comparator;
 import libs.Node;
 
-import java.io.PrintWriter;
 import java.util.*;
 
 public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
-    private final Map<String, String> symbolTable = new HashMap<>();
+    private final Map<String, Expression> assignmentTable = new HashMap<>();
+
+    private final Map<String, List<Node>> functionTable = new HashMap<>();
+
+    private final List<String> illegalNames = Arrays.asList("call", "canvas", "block", "start", "shape", "name", "for",
+            "if", "define");
 
     private int nextLocation = 1;
 
@@ -35,31 +39,80 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(CanvasStatement c, StringBuilder param) {
+        System.out.println("Visiting canvas statement validation.");
         if (c.getWidth() < 1) {
-            return "Cannot have canvas width less than 1";
+            return "Error: Cannot have canvas width less than 1. \n";
         } else if (c.getHeight() < 1) {
-            return "Cannot have canvas height less than 1";
+            return "Error: Cannot have canvas height less than 1. \n";
         }
         return "";
     }
 
     @Override
     public String visit(SimpleAssignmentStatement s, StringBuilder param) {
+        System.out.println("Visiting simple assignment statement validation.");
+        String checkName = s.getName().accept(this, param);
+        String checkExp = s.getValue().accept(this, param);
+        if (!Objects.equals(checkName + checkExp, "")){
+            return checkName + checkExp;
+        }
+
+        String name = s.getName().getVarStr();
+        if (functionTable.containsKey(name)) {
+            return "Error: variable name has already been used as a function name. \n";
+        }
+        assignmentTable.put(name, s.getValue());
         return "";
     }
 
     @Override
     public String visit(ShapeAssignmentStatement s, StringBuilder param) {
+        System.out.println("Visiting shape assignment statement validation.");
+        String checkName = s.getName().accept(this, param);
+        if (!Objects.equals(checkName, "")){
+            return checkName;
+        }
+
+        String name = s.getName().getVarStr();
+        if (functionTable.containsKey(name)) {
+            return "Error: variable name has already been used as a function name. \n";
+        }
+
+        assignmentTable.put(name, null);
         return "";
     }
 
     @Override
     public String visit(CallStatement c, StringBuilder param) {
+        System.out.println("Visiting call statement validation.");
+        if (!functionTable.containsKey(c.getName().getVarStr())) {
+            return "Error: attempting to call function that was not defined. \n";
+        }
         return "";
     }
 
     @Override
     public String visit(DefineStatement d, StringBuilder param) {
+        System.out.println("Visiting define statement validation.");
+
+        String checkName = d.getName().accept(this, param);
+        String checkArgs = d.getArgs().accept(this, param);
+
+        if (!Objects.equals(checkName + checkArgs, "")){
+            return checkName + checkArgs;
+        }
+
+        for (Node statement: d.getStatements()) {
+            String error = statement.accept(this, param);
+            if (!Objects.equals(error, "")) {
+                return error;
+            }
+        }
+
+        String name = d.getName().getVarStr();
+        if (assignmentTable.containsKey(name)) {
+            return "Error: function name has already been used as a variable name. \n";
+        }
         return "";
     }
 
@@ -75,7 +128,8 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(BlockShapeStatement b, StringBuilder param) {
-        return "";
+        System.out.println("Visiting block shape statement validation.");
+        return b.getVar().accept(this, param);
     }
 
     @Override
@@ -110,8 +164,6 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     @Override
     public String visit(Expression e, StringBuilder param) {
         System.out.println("Visiting expression validation.");
-        System.out.println(e.getValues());
-        System.out.println(e.getOperators());
         if (e.getValues().isEmpty() || e.getValues().get(0) == null) {
             return "Missing value for expression, you must provide at least one integer. \n";
         } else if (e.getValues().size() != e.getOperators().size() + 1 || e.getValues().contains(null)) {
@@ -141,7 +193,11 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(Variable v, StringBuilder param) {
-
+        System.out.println("Visiting variable validation.");
+        String name = v.getVarStr();
+        if (illegalNames.contains(name)) {
+            return "Error: variable name cannot be one of the predefined keywords: " + illegalNames.toString();
+        }
         return "";
     }
 
@@ -162,9 +218,5 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
             return "Error, operator is not supported. \n";
         }
         return "";
-    }
-
-    public Map<String, String> getSymbolTable() {
-        return symbolTable;
     }
 }
