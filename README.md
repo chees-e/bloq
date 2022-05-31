@@ -22,7 +22,7 @@ The Bloq grammar is a Antlr4 grammar that is designed to simplify the process of
 Creating a canvas with height *h*, and width *w*:   
 
 ```
-canvas h, w
+canvas: h, w
 ```
 
 Defaults:  
@@ -33,27 +33,75 @@ w: 100
 Placing a block of *type* at the location (*x*, *y*) with shape *bitmap*:  
 
 ```
- Block: type 
- Start: x, y
- Shape: bipmap
+ block: type 
+ start: x, y
+ shape: bitmap
 ```
 
 Defaults:  
-Start: 0, 0  
-Shape: 1;
+```
+start: 0, 0  
+shape: 1;
+```
+*type* is a predefined type of block. 
 
-*bitmap* can be a variable that is previously assigned a bitmap, or it can be define on the next line after Shape.
+Supported blocktypes:
+```
+land
+water
+lava
+enemy
+```
+
+*bitmap* can be a variable that is previously assigned a bitmap, or it can be define on the next line after Shape.  
+The bitmap should be in the monochrome format, setting a bit to 1 will place a block at that location.  
+Every row (including the last) must be terminated with semicolon.  
+The top left bit will be aligned to the start location.  
+If a block is placed at a location that's already occupied, the new block will replace the old block.
 
 Bitmap Structure:
 ```
-slantedLine = 
+slantedLine: 
 0001;
 0010;
 0100;
 1000;
 ```
-Every row (including the last) must be terminated with semicolon.  
-The top left bit will be aligned to the start location.
+
+Placing a slantedline water block at 0, 0 on a 4x4 canvas will look like the following:  
+
+![bitmap1](assets/bitmap1.png)
+```
+canvas: 4, 4
+
+block: water
+start: 0, 0
+shape:
+0001;
+0010;
+0100;
+1000;
+```
+
+You can also place multiple block types in a single statement. 
+The placement of each type of block can be defined in *shape*. 
+The number associated with each block type corresponds to the position of that block type in the *block* statement, 
+starting with 1.
+
+```
+canvas: 4, 4
+
+block: water, lava, enemy
+start: 0, 0
+shape:
+0001;
+0020;
+0300;
+1000;
+```
+The code above will product the following image:
+
+![bitmap2](assets/bitmap2.png)
 
 #
 ### Using Variables
@@ -82,7 +130,8 @@ for i: 1 to 10 {
     statement
 }
 ```
-Statement can be either a variable assignment, a block placement, or a function call.
+Statement can be either a variable assignment, a block placement, or a function call.  
+Nest for loops are currently unsupported.
 
 #
 ### Using Conditionals
@@ -93,6 +142,7 @@ if (condition) {
 }
 ```
 Condition is a comparison between two mathematical expressions.  
+Bloq currently only supports single condition if statements.  
 Supported comparisons:  
 | Comparison | Symbol |
 | ---------- | ---------- |
@@ -151,5 +201,13 @@ for i: 0 to 9 {
 ![example_1](https://github.students.cs.ubc.ca/CPSC410-2022S-T1/cpsc410_project1_team9/tree/ui/images/example_1.png?raw=true)
 
 ---
+
+#
+### Features coming soon
+Nested for loops  
+Multiple conditions in if statement  
+if/else statements  
+
+
 ## **Contributors**
 Charlie Li, Janie Wang, Jessica Zhan, John Pham, and Shawn Lu.

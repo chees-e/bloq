@@ -17,8 +17,8 @@ public class ShapeRow extends Node {
     } // string because we need to preserve the zeros
 
     @Override
-    public int accept(BloqVisitor visitor, PrintWriter writer) {
-        return visitor.visit(this, writer);
+    public <T, U> U accept(BloqVisitor<T, U> visitor, T t) {
+        return visitor.visit(this, t);
     }
 
     @Override

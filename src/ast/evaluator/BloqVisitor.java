@@ -4,44 +4,44 @@ import ast.*;
 
 import java.io.PrintWriter;
 
-public interface BloqVisitor {
-    int visit(Program p, PrintWriter printWriter);
+public interface BloqVisitor<T, U> {
+    U visit(Program p, T param);
 
-    int visit(Statement s, PrintWriter printWriter);
+    U visit(Statement s, T param);
 
-    int visit(CanvasStatement c, PrintWriter printWriter);
+    U visit(CanvasStatement c, T param);
 
-    int visit(SimpleAssignmentStatement s, PrintWriter printWriter);
+    U visit(SimpleAssignmentStatement s, T param);
 
-    int visit(ShapeAssignmentStatement s, PrintWriter printWriter);
+    U visit(ShapeAssignmentStatement s, T param);
 
-    int visit(CallStatement c, PrintWriter printWriter);
+    U visit(CallStatement c, T param);
 
-    int visit(DefineStatement d, PrintWriter printWriter);
+    U visit(DefineStatement d, T param);
 
-    int visit(BlockStatement b, PrintWriter printWriter);
+    U visit(BlockStatement b, T param);
 
-    int visit(BlockStartStatement b, PrintWriter printWriter);
+    U visit(BlockStartStatement b, T param);
 
-    int visit(BlockShapeStatement b, PrintWriter printWriter);
+    U visit(BlockShapeStatement b, T param);
 
-    int visit(LoopStatement l, PrintWriter printWriter);
+    U visit(LoopStatement l, T param);
 
-    int visit(IfStatement i, PrintWriter printWriter);
+    U visit(IfStatement i, T param);
 
-    int visit(Condition c, PrintWriter printWriter);
+    U visit(Condition c, T param);
 
-    int visit(Expression e, PrintWriter printWriter);
+    U visit(Expression e, T param);
 
-    int visit(Args a, PrintWriter printWriter);
+    U visit(Args a, T param);
 
-    int visit(ShapeRow s, PrintWriter printWriter);
+    U visit(ShapeRow s, T param);
 
-    int visit(Variable v, PrintWriter printWriter);
+    U visit(Variable v, T param);
 
-    int visit(Value v, PrintWriter printWriter);
+    U visit(Value v, T param);
 
-    int visit(Comparator c, PrintWriter printWriter);
+    U visit(Comparator c, T param);
 
-    int visit(Operator o, PrintWriter printWriter);
+    U visit(Operator o, T param);
 }

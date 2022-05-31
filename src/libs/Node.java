@@ -5,6 +5,6 @@ import ast.evaluator.BloqVisitor;
 import java.io.PrintWriter;
 
 public abstract class Node {
-    public abstract int accept(BloqVisitor visitor, PrintWriter writer); // Add printer
+    public abstract <T, U> U accept(BloqVisitor<T,U> visitor, T t);
     public abstract int getType();
 }

@@ -5,7 +5,7 @@ import libs.*;
 import java.io.PrintWriter;
 import java.util.List;
 
-public class PyEvaluator implements BloqVisitor{
+public class PyEvaluator implements BloqVisitor<PrintWriter, Integer>{
     private int IndentLevel;
 
 
@@ -62,7 +62,7 @@ canvas.save("./output.png")
 
 
     @Override
-    public int visit(Program p, PrintWriter printWriter) {
+    public Integer visit(Program p, PrintWriter printWriter) {
         if (log) {
             System.out.println("Visited program");
         }
@@ -81,7 +81,7 @@ canvas.save("./output.png")
 
     // Is this neccessary? TODO
     @Override
-    public int visit(Statement s, PrintWriter printWriter) {
+    public Integer visit(Statement s, PrintWriter printWriter) {
         if (log) {
             System.out.println("Visited statement");
         }
@@ -92,7 +92,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(CanvasStatement c, PrintWriter printWriter) {
+    public Integer visit(CanvasStatement c, PrintWriter printWriter) {
         String out = String.format("canvas = Image.new(\"RGB\", ( %d * block_size, %d * block_size), (255, 255, 255))", c.getWidth(), c.getHeight());
         AddIndent(this.IndentLevel, printWriter);
         printWriter.println(out);
@@ -100,7 +100,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(SimpleAssignmentStatement s, PrintWriter printWriter) {
+    public Integer visit(SimpleAssignmentStatement s, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
         s.getName().accept(this, printWriter);
@@ -112,7 +112,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(ShapeAssignmentStatement s, PrintWriter printWriter) {
+    public Integer visit(ShapeAssignmentStatement s, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
         s.getName().accept(this, printWriter);
@@ -128,7 +128,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(CallStatement c, PrintWriter printWriter) {
+    public Integer visit(CallStatement c, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
         c.getName().accept(this, printWriter); // no space after variable
@@ -141,7 +141,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(DefineStatement d, PrintWriter printWriter) {
+    public Integer visit(DefineStatement d, PrintWriter printWriter) {
         // I think define cannot be within any other statements so im not checking indent here
 
         printWriter.write("def ");
@@ -163,7 +163,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(BlockStatement b, PrintWriter printWriter) {
+    public Integer visit(BlockStatement b, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
         // prewritten function name: _block
@@ -187,7 +187,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(BlockStartStatement b, PrintWriter printWriter) {
+    public Integer visit(BlockStartStatement b, PrintWriter printWriter) {
         printWriter.write("x=");
         b.getX().accept(this, printWriter);
         printWriter.write(", y=");
@@ -197,7 +197,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(BlockShapeStatement b, PrintWriter printWriter) {
+    public Integer visit(BlockShapeStatement b, PrintWriter printWriter) {
         if (b.getVar() != null) {
             printWriter.write("shape=");
             b.getVar().accept(this, printWriter);
@@ -216,7 +216,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(LoopStatement l, PrintWriter printWriter) {
+    public Integer visit(LoopStatement l, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
         printWriter.write("for ");
@@ -240,7 +240,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(IfStatement i, PrintWriter printWriter) {
+    public Integer visit(IfStatement i, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
         printWriter.write("if ");
@@ -260,9 +260,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(Condition c, PrintWriter printWriter) {
-        // TODO: check that expression is exactly 2
-
+    public Integer visit(Condition c, PrintWriter printWriter) {
         c.getExpressions().get(0).accept(this,printWriter);
         c.getComp().accept(this, printWriter);
         c.getExpressions().get(1).accept(this,printWriter);
@@ -270,13 +268,12 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(Expression e, PrintWriter printWriter) {
+    public Integer visit(Expression e, PrintWriter printWriter) {
         // gets the first value first
         List<Value> values = e.getValues();
         List<Operator> operators = e.getOperators();
 
         values.get(0).accept(this, printWriter);
-        // TODO: Check that num of values is exactly 1 greater than operator
         for (int i = 0; i < operators.size(); i++) {
             operators.get(i).accept(this, printWriter);
             values.get(i+1).accept(this, printWriter);
@@ -286,7 +283,7 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(Args a, PrintWriter printWriter) {
+    public Integer visit(Args a, PrintWriter printWriter) {
         for (int i = 0; i < a.getArguments().size(); i++) {
             if (i > 0) {
                 printWriter.write(", ");
@@ -297,31 +294,31 @@ canvas.save("./output.png")
     }
 
     @Override
-    public int visit(ShapeRow s, PrintWriter printWriter) {
+    public Integer visit(ShapeRow s, PrintWriter printWriter) {
         printWriter.write("\"" + s.getShaperow() + "\"");
         return 0;
     }
 
     @Override
-    public int visit(Variable v, PrintWriter printWriter) {
+    public Integer visit(Variable v, PrintWriter printWriter) {
         printWriter.write(v.getVarStr());
         return 0;
     }
 
     @Override
-    public int visit(Value v, PrintWriter printWriter) {
+    public Integer visit(Value v, PrintWriter printWriter) {
         printWriter.write(v.getValueStr()); // TODO: check for (int/str)
         return 0;
     }
 
     @Override
-    public int visit(Comparator c, PrintWriter printWriter) {
+    public Integer visit(Comparator c, PrintWriter printWriter) {
         printWriter.write(c.getComp());
         return 0;
     }
 
     @Override
-    public int visit(Operator o, PrintWriter printWriter) {
+    public Integer visit(Operator o, PrintWriter printWriter) {
         printWriter.write(o.getOp());
         return 0;
     }
