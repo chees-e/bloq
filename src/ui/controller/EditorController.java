@@ -13,10 +13,7 @@ import javafx.scene.image.ImageView;
 
 import java.awt.*;
 import java.awt.image.BufferedImage;
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 
 import javafx.scene.layout.*;
 import libs.Node;
@@ -38,6 +35,9 @@ public class EditorController {
     private TextArea editorTextArea;
 
     @FXML
+    private TextArea consoleTextArea;
+
+    @FXML
     private ImageView outputImageView;
 
     @FXML
@@ -47,6 +47,7 @@ public class EditorController {
     public void runButtonClicked(ActionEvent event) {
         try {
             String input = editorTextArea.getText();
+            consoleTextArea.clear();
 
             bloqLexer lexer = new bloqLexer(CharStreams.fromString(input));
             for (Token token : lexer.getAllTokens()) {
@@ -55,11 +56,13 @@ public class EditorController {
             lexer.reset();
             TokenStream tokens = new CommonTokenStream(lexer);
             System.out.println("Done tokenizing");
+            consoleTextArea.appendText("Done tokenizing\n");
 
             bloqParser parser = new bloqParser(tokens);
             ParseToASTVisitor visitor = new ParseToASTVisitor();
             Node parsedProgram = (Node)parser.program().accept(visitor);
             System.out.println("Done parsing");
+            consoleTextArea.appendText("Done parsing\n");
 
             System.out.println(parser);
 
@@ -69,7 +72,10 @@ public class EditorController {
             parsedProgram.accept(eval, out);
             out.close();
             System.out.println("Done evaluation");
-            Process process = Runtime.getRuntime().exec("python ./output.py"); // TODO: Double check python or python3
+            consoleTextArea.appendText("Done evaluating\n");
+
+            // TODO: Double check python or python3, if on ARM macOS, may need to add 'arch -arm64' before python
+            Process process = Runtime.getRuntime().exec("python3 ./output.py");
             int exitcode = process.waitFor();
             System.out.println(exitcode);
 
