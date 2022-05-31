@@ -46,7 +46,7 @@ package parser.gen;
 }
 options { tokenVocab=bloqLexer;}
 program: statement+;
-statement: ((canvas_statement | simple_assignment_statement | shape_assignment_statement | define_statement | call_statement | block_statement | loop_statement | if_statement) NEWLINE+);
+statement: ((canvas_statement | simple_assignment_statement | shape_assignment_statement | define_statement | call_statement | block_statement | loop_statement | if_statement) (NEWLINE+| <EOF>));
 
 canvas_statement: CANVAS COLON NUMBER COMMA NUMBER;
 simple_assignment_statement: variable COLON expression;
@@ -68,7 +68,7 @@ block_shape_statement: SHAPE COLON NEWLINE? (shape_row+ | variable);
 
 // loop_statement: FOR variable COLON value TO value OPENCURLY NEWLINE* (in_loop_statement NEWLINE+)+ CLOSECURLY;
 // in_loop_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement); // not allowing nested loops
-loop_statement: FOR variable COLON value TO value OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement) NEWLINE+)+ CLOSECURLY;
+loop_statement: FOR OPENBRACKET? variable COLON value TO value CLOSEBRACKET? OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement) NEWLINE+)+ CLOSECURLY;
 
 // if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY;
 // in_if_statement : (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement);

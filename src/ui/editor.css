@@ -31,6 +31,10 @@
     -fx-border-color: none;
 }
 
+Text {
+    -fx-tab-size: 4;
+}
+
 .text-area:focused {
     -fx-highlight-fill: none;
 }
@@ -75,7 +79,15 @@
     -fx-background-radius: 0;
 }
 
-.text-area:focused .content {
+#editorTextArea:focused .content {
+    -fx-background-color: rgb(80, 80, 80);
+    -fx-border-color: none;
+    -fx-border-radius: 0px;
+    -fx-border-width: 0px;
+    -fx-focus-color: none;
+}
+
+#consoleTextArea:focused .content {
     -fx-background-color: rgb(80, 80, 80);
     -fx-border-color: none;
     -fx-border-radius: 0px;

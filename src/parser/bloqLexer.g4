@@ -79,4 +79,4 @@ CLOSECURLY: '}';
 OPENBRACKET: '(';
 CLOSEBRACKET: ')';
 NEWLINE: '\n';
-WS: [\r ]+ -> skip; 
+WS: [\r\t ]+ -> skip;
