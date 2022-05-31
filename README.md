@@ -26,8 +26,10 @@ canvas: h, w
 ```
 
 Defaults:  
+```
 h: 100   
 w: 100
+```
 #
 ### Placing a Block:
 Placing a block of *type* at the location (*x*, *y*) with shape *bitmap*:  
