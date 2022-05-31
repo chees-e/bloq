@@ -7,12 +7,10 @@ import javafx.embed.swing.SwingFXUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.SplitPane;
 import javafx.scene.control.TextArea;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
-import java.awt.*;
 import java.awt.image.BufferedImage;
 import java.io.*;
 
@@ -44,6 +42,7 @@ public class EditorController {
     @FXML
     private AnchorPane rightPane;
 
+    // parts of this method where the lexer, parser and visitors are created are modelled after the lecture examples
     @FXML
     public void runButtonClicked(ActionEvent event) {
         try {
@@ -57,13 +56,11 @@ public class EditorController {
             lexer.reset();
             TokenStream tokens = new CommonTokenStream(lexer);
             System.out.println("Done tokenizing");
-            consoleTextArea.appendText("Done tokenizing\n");
 
             bloqParser parser = new bloqParser(tokens);
             ParseToASTVisitor visitor = new ParseToASTVisitor();
             Node parsedProgram = (Node)parser.program().accept(visitor);
             System.out.println("Done parsing");
-            consoleTextArea.appendText("Done parsing\n");
 
             System.out.println(parser);
 
@@ -71,8 +68,8 @@ public class EditorController {
             StringBuilder sbErrors = new StringBuilder();
             String errors = (String) parsedProgram.accept(validate, sbErrors);
             if (errors != "") {
-                System.out.println("Static check errors: \n" + errors);
-                System.exit(1);
+                consoleTextArea.appendText("Static check errors: \n" + errors);
+                return;
             }
             System.out.println("Done validating");
 
@@ -82,10 +79,8 @@ public class EditorController {
             out.close();
             System.out.println("Done evaluation");
 
-            consoleTextArea.appendText("Done evaluating\n");
-
             // TODO: Double check python or python3, if on ARM macOS, may need to add 'arch -arm64' before python
-            Process process = Runtime.getRuntime().exec("python3 ./output.py");
+            Process process = Runtime.getRuntime().exec("arch -arm64 python3 ./output.py");
 
             int exitcode = process.waitFor();
             System.out.println(exitcode);

@@ -4,6 +4,7 @@
 <?import javafx.scene.control.SplitPane?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
 
 <AnchorPane fx:id="background" prefHeight="600.0" prefWidth="1000.0" stylesheets="@editor.css" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ui.controller.EditorController">
    <children>
@@ -16,12 +17,18 @@
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
                               <Button fx:id="runButton" mnemonicParsing="false" onAction="#runButtonClicked" prefHeight="25.0" prefWidth="25.0" stylesheets="@editor.css" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
-                              <TextArea fx:id="editorTextArea" prefHeight="570.0" prefWidth="495.0" stylesheets="@editor.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="30.0" />
+                              <TextArea fx:id="editorTextArea" prefHeight="570.0" prefWidth="495.0" stylesheets="@editor.css" AnchorPane.bottomAnchor="1.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="30.0">
+                                 <font>
+                                    <Font name="Courier New Bold" size="14.0" />
+                                 </font></TextArea>
                            </children>
                         </AnchorPane>
                       <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="100.0" prefWidth="160.0">
                            <children>
-                              <TextArea fx:id="consoleTextArea" editable="false" prefHeight="120.0" prefWidth="495.0" stylesheets="@editor.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0" />
+                              <TextArea fx:id="consoleTextArea" editable="false" prefHeight="120.0" prefWidth="495.0" stylesheets="@editor.css" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="1.0" AnchorPane.topAnchor="1.0">
+                                 <font>
+                                    <Font name="Courier New Bold" size="14.0" />
+                                 </font></TextArea>
                            </children>
                         </AnchorPane>
                     </items>

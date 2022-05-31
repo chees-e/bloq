@@ -52,13 +52,22 @@
     -fx-border-width: 0px;
     -fx-focus-color: none;
     -fx-background-insets: 0;
-    -fx-background-color: rgb(80, 80, 80);
-    -fx-text-fill: rgb(256, 0, 0);
+    -fx-background-color: rgb(56, 56, 56);
+    -fx-text-fill: rgb(256, 60, 60);
     -fx-highlight-fill: rgb(0, 150, 256);
 }
 
-.text-area .content {
+#editorTextArea .content {
     -fx-background-color: rgb(80, 80, 80);
+    -fx-border-color: none;
+    -fx-border-radius: 0px;
+    -fx-border-width: 0px;
+    -fx-focus-color: none;
+    -fx-background-radius: 0;
+}
+
+#consoleTextArea .content {
+    -fx-background-color: rgb(56, 56, 56);
     -fx-border-color: none;
     -fx-border-radius: 0px;
     -fx-border-width: 0px;
