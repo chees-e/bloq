@@ -19,16 +19,16 @@ The Bloq grammar is a Antlr4 grammar that is designed to simplify the process of
 ## **Getting Started**
 
 ### Creating a Canvas:
-Creating a canvas with height *h*, and width *w*:   
+Creating a canvas with width *w*, and height *h*:   
 
 ```
-canvas: h, w
+canvas: w, h
 ```
 
 Defaults:  
 ```
-h: 100   
-w: 100
+w: 100   
+h: 100
 ```
 #
 ### Placing a Block:
@@ -195,8 +195,8 @@ pattern:
 for i: 0 to 9 {
     if (i % 2 == 0) {
         block: water
-        Start: i, 0
-        Shape: pattern
+        start: i, 0
+        shape: pattern
     }
 }
 ```
