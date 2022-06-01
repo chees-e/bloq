@@ -153,7 +153,7 @@ canvas.save("./output.png")
 
         this.IndentLevel = this.IndentLevel + 1;
 
-        for (Node statement: d.getStatements()) {
+        for (InFunctionStatement statement: d.getStatements()) {
             statement.accept(this, printWriter);
         }
 
@@ -239,7 +239,7 @@ canvas.save("./output.png")
 
         this.IndentLevel = this.IndentLevel + 1;
 
-        for (Node statement: l.getStatements()) {
+        for (InLoopStatement statement: l.getStatements()) {
             statement.accept(this, printWriter);
         }
 
@@ -274,7 +274,7 @@ canvas.save("./output.png")
 
         this.IndentLevel = this.IndentLevel + 1;
 
-        for (Node statement: i.getStatements()) {
+        for (InIfStatement statement: i.getStatements()) {
             statement.accept(this, printWriter);
         }
 
