@@ -127,8 +127,8 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     }
 
     @Override public BlockStartStatement visitBlock_start_statement(bloqParser.Block_start_statementContext ctx) {
-        Value x = visitValue(ctx.value(0));
-        Value y = visitValue(ctx.value(1)); // cannot be expressions
+        Expression x = visitExpression(ctx.expression(0));
+        Expression y = visitExpression(ctx.expression(1)); // cannot be expressions
 
         return new BlockStartStatement(x, y);
     }
@@ -169,6 +169,9 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
         for (bloqParser.If_statementContext c: ctx.if_statement()) {
             statements.add(visitIf_statement(c));
         }
+        for (bloqParser.Loop_statementContext c: ctx.loop_statement()) {
+            statements.add(visitLoop_statement(c));
+        }
 
         return new LoopStatement(var, start, end, statements);
     }
@@ -176,7 +179,16 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     @Override public IfStatement visitIf_statement(bloqParser.If_statementContext ctx) {
         List<Node> statements = new ArrayList<>();
 
-        Condition cond = visitCondition(ctx.condition());
+        Condition cond = null;
+        LinkedCondition linked_cond = null;
+
+        if (ctx.condition() != null) {
+            cond = visitCondition(ctx.condition());
+        }
+
+        if (ctx.linked_condition() != null) {
+            linked_cond = visitLinked_condition(ctx.linked_condition());
+        }
 
         for (bloqParser.Simple_assignment_statementContext c: ctx.simple_assignment_statement()) {
             statements.add(visitSimple_assignment_statement(c));
@@ -191,7 +203,21 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
             statements.add(visitCall_statement(c));
         }
 
-        return new IfStatement(cond, statements);
+        return new IfStatement(cond, linked_cond, statements);
+    }
+
+    @Override public LinkedCondition visitLinked_condition(bloqParser.Linked_conditionContext ctx) {
+        List<Condition> conditions = new ArrayList<>();
+        List<LogicOperator> operators = new ArrayList<>();
+
+        for (bloqParser.ConditionContext c: ctx.condition()) {
+            conditions.add(visitCondition(c));
+        }
+        for (bloqParser.Logic_operatorContext c: ctx.logic_operator()) {
+            operators.add(visitLogic_operator(c));
+        }
+
+        return new LinkedCondition(conditions, operators);
     }
 
     @Override public Condition visitCondition(bloqParser.ConditionContext ctx) {
@@ -287,4 +313,19 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
 
         return new Operator(op);
     }
+
+    @Override public LogicOperator visitLogic_operator(bloqParser.Logic_operatorContext ctx) {
+        String op;
+
+        if (ctx.AND() != null) {
+            op = ctx.AND().getText();
+        } else if (ctx.OR() != null) {
+            op = ctx.OR().getText();
+        } else {
+            return null;
+        }
+
+        return new LogicOperator(op);
+    }
+
 }

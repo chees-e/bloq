@@ -63,6 +63,9 @@ LESS: '<';
 LESSRQ: '<=';
 NOTEQ: '!=';
 
+AND: '&&';
+OR: '||';
+
 PLUS: '+';
 MINUS: '-';
 MULTIPLY: '*';

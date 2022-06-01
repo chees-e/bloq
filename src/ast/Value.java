@@ -34,6 +34,6 @@ public class Value extends Node {
     }
     @Override
     public int getType(){
-        return 19;
+        return 21;
     }
 }

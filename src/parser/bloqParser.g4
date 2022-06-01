@@ -63,17 +63,18 @@ block_statement: BLOCK COLON args (NEWLINE (block_start_statement | block_shape_
 
 // This way you can include multiple blocks in one pattern
 // But it also means each block must be separted by a newline
-block_start_statement: START COLON value COMMA value;
+block_start_statement: START COLON expression COMMA expression;
 block_shape_statement: SHAPE COLON NEWLINE? (shape_row+ | variable);
 
 // loop_statement: FOR variable COLON value TO value OPENCURLY NEWLINE* (in_loop_statement NEWLINE+)+ CLOSECURLY;
 // in_loop_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement); // not allowing nested loops
-loop_statement: FOR OPENBRACKET? variable COLON value TO value CLOSEBRACKET? OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement) NEWLINE+)+ CLOSECURLY;
+loop_statement: FOR OPENBRACKET? variable COLON value TO value CLOSEBRACKET? OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement | loop_statement) NEWLINE+)+ CLOSECURLY;
 
 // if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY;
 // in_if_statement : (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement);
-if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | call_statement) NEWLINE+)+ CLOSECURLY;
+if_statement: IF OPENBRACKET? (condition|linked_condition) CLOSEBRACKET? OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | call_statement) NEWLINE+)+ CLOSECURLY;
 
+linked_condition: (condition (logic_operator condition)+);
 condition: expression comparator expression;
 expression: (value (operator value)*); // Not allowing parentesses atm 
 
@@ -83,3 +84,4 @@ variable: TEXT;
 value: NUMBER | TEXT;
 comparator: (EQUAL | GREATER | GREATEREQ | LESS | LESSRQ | NOTEQ) ;
 operator: (PLUS | MINUS | MULTIPLY | DIVIDE | MODULO);
+logic_operator: (AND | OR);

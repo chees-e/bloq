@@ -29,6 +29,8 @@ public interface BloqVisitor<T, U> {
 
     U visit(IfStatement i, T param);
 
+    U visit(LinkedCondition c, T param);
+
     U visit(Condition c, T param);
 
     U visit(Expression e, T param);
@@ -44,4 +46,6 @@ public interface BloqVisitor<T, U> {
     U visit(Comparator c, T param);
 
     U visit(Operator o, T param);
+
+    U visit(LogicOperator o, T param);
 }

@@ -23,6 +23,6 @@ public class Variable extends Node {
 
     @Override
     public int getType(){
-        return 20;
+        return 22;
     }
 }

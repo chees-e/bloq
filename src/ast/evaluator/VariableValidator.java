@@ -148,7 +148,20 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     @Override
     public String visit(IfStatement i, StringBuilder param) {
         System.out.println("Visiting if statement validation.");
-        return i.getCond().accept(this, param);
+
+        // TODO: FIX, I MODIFIED TO AVOID ERROR
+        if (i.getCond() != null) {
+            return i.getCond().accept(this, param);
+        } else {
+            return "";
+        }
+    }
+
+    @Override
+    public String visit(LinkedCondition c, StringBuilder param) {
+        // TODO
+
+        return "";
     }
 
     @Override
@@ -217,6 +230,13 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         if (!operators.contains(o.getOp())) {
             return "Error, operator is not supported. \n";
         }
+        return "";
+    }
+
+    @Override
+    public String visit(LogicOperator o, StringBuilder param) {
+        // TODO
+
         return "";
     }
 }
