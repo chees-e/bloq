@@ -4,6 +4,7 @@ import ast.*;
 import ast.Comparator;
 import libs.Node;
 
+import java.io.PrintWriter;
 import java.util.*;
 
 public class VariableValidator implements BloqVisitor<StringBuilder, String>{
@@ -93,6 +94,8 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(DefineStatement d, StringBuilder param) {
+        // TODO double check this function
+
         System.out.println("Visiting define statement validation.");
 
         String checkName = d.getName().accept(this, param);
@@ -117,6 +120,12 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     }
 
     @Override
+    public String visit(InFunctionStatement s, StringBuilder param) {
+        // TODO
+        return "";
+    }
+
+    @Override
     public String visit(BlockStatement b, StringBuilder param) {
         return "";
     }
@@ -134,6 +143,7 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(LoopStatement l, StringBuilder param) {
+        // TODO double check this function
         System.out.println("Visiting loop statement validation.");
         StringBuilder totalErrors = new StringBuilder();
         for (Node statement: l.getStatements()) {
@@ -146,6 +156,12 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     }
 
     @Override
+    public String visit(InLoopStatement s, StringBuilder param) {
+        // TODO
+        return "";
+    }
+
+    @Override
     public String visit(IfStatement i, StringBuilder param) {
         System.out.println("Visiting if statement validation.");
 
@@ -155,6 +171,12 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         } else {
             return "";
         }
+    }
+
+    @Override
+    public String visit(InIfStatement s, StringBuilder param) {
+        // TODO
+        return "";
     }
 
     @Override

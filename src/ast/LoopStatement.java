@@ -10,16 +10,16 @@ public class LoopStatement extends Node {
     private final Variable var;
     private final Value start;
     private final Value end;
-    private final List<Node> statements;
+    private final List<InLoopStatement> statements;
 
-    public LoopStatement(Variable var, Value start, Value end, List<Node> statements){
+    public LoopStatement(Variable var, Value start, Value end, List<InLoopStatement> statements){
         this.var = var;
         this.start = start;
         this.end = end;
         this.statements = statements;
     }
 
-    public List<Node> getStatements() {
+    public List<InLoopStatement> getStatements() {
         return statements;
     }
 
@@ -42,6 +42,6 @@ public class LoopStatement extends Node {
 
     @Override
     public int getType(){
-        return 14;
+        return 17;
     }
 }

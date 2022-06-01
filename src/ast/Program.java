@@ -22,6 +22,6 @@ public class Program extends Node {
 
     @Override
     public int getType(){
-        return 16;
+        return 19;
     }
 }

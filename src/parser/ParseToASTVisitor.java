@@ -79,28 +79,54 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
     @Override public DefineStatement visitDefine_statement(bloqParser.Define_statementContext ctx) {
         Variable name = visitVariable(ctx.variable());
         Args args = visitArgs(ctx.args());
-        List<Node> statements = new ArrayList<>();
+        List<InFunctionStatement> statements = new ArrayList<>();
 
-        for (bloqParser.Simple_assignment_statementContext c: ctx.simple_assignment_statement()) {
-            statements.add(visitSimple_assignment_statement(c));
+        for (bloqParser.In_function_statementContext c: ctx.in_function_statement()) {
+            statements.add(visitIn_function_statement(c));
         }
-        for (bloqParser.Shape_assignment_statementContext c: ctx.shape_assignment_statement()) {
-            statements.add(visitShape_assignment_statement(c));
-        }
-        for (bloqParser.Block_statementContext c: ctx.block_statement()) {
-            statements.add(visitBlock_statement(c));
-        }
-        for (bloqParser.Loop_statementContext c: ctx.loop_statement()) {
-            statements.add(visitLoop_statement(c));
-        }
-        for (bloqParser.Call_statementContext c: ctx.call_statement()) {
-            statements.add(visitCall_statement(c));
-        }
-        for (bloqParser.If_statementContext c: ctx.if_statement()) {
-            statements.add(visitIf_statement(c));
-        }
+
+//        for (bloqParser.Simple_assignment_statementContext c: ctx.simple_assignment_statement()) {
+//            statements.add(visitSimple_assignment_statement(c));
+//        }
+//        for (bloqParser.Shape_assignment_statementContext c: ctx.shape_assignment_statement()) {
+//            statements.add(visitShape_assignment_statement(c));
+//        }
+//        for (bloqParser.Block_statementContext c: ctx.block_statement()) {
+//            statements.add(visitBlock_statement(c));
+//        }
+//        for (bloqParser.Loop_statementContext c: ctx.loop_statement()) {
+//            statements.add(visitLoop_statement(c));
+//        }
+//        for (bloqParser.Call_statementContext c: ctx.call_statement()) {
+//            statements.add(visitCall_statement(c));
+//        }
+//        for (bloqParser.If_statementContext c: ctx.if_statement()) {
+//            statements.add(visitIf_statement(c));
+//        }
 
         return new DefineStatement(name, args, statements);
+    }
+
+    @Override public InFunctionStatement visitIn_function_statement(bloqParser.In_function_statementContext ctx) {
+        Node statement;
+
+        if (ctx.simple_assignment_statement() != null) {
+            statement = visitSimple_assignment_statement(ctx.simple_assignment_statement());
+        } else if (ctx.shape_assignment_statement() != null) {
+            statement = visitShape_assignment_statement(ctx.shape_assignment_statement());
+        } else if (ctx.call_statement() != null) {
+            statement = visitCall_statement(ctx.call_statement());
+        } else if (ctx.block_statement() != null) {
+            statement = visitBlock_statement(ctx.block_statement());
+        } else if (ctx.loop_statement() != null) {
+            statement = visitLoop_statement(ctx.loop_statement());
+        } else if (ctx.if_statement() != null) {
+            statement = visitIf_statement(ctx.if_statement());
+        } else {
+            return null;
+        }
+
+        return new InFunctionStatement(statement);
     }
 
     @Override public BlockStatement visitBlock_statement(bloqParser.Block_statementContext ctx) {
@@ -152,32 +178,40 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
         Value start = visitValue(ctx.value(0));
         Value end = visitValue(ctx.value(1));
 
-        List<Node> statements = new ArrayList<>();
+        List<InLoopStatement> statements = new ArrayList<>();
 
-        for (bloqParser.Simple_assignment_statementContext c: ctx.simple_assignment_statement()) {
-            statements.add(visitSimple_assignment_statement(c));
+        for (bloqParser.In_loop_statementContext c: ctx.in_loop_statement()) {
+            statements.add(visitIn_loop_statement(c));
         }
-        for (bloqParser.Shape_assignment_statementContext c: ctx.shape_assignment_statement()) {
-            statements.add(visitShape_assignment_statement(c));
-        }
-        for (bloqParser.Block_statementContext c: ctx.block_statement()) {
-            statements.add(visitBlock_statement(c));
-        }
-        for (bloqParser.Call_statementContext c: ctx.call_statement()) {
-            statements.add(visitCall_statement(c));
-        }
-        for (bloqParser.If_statementContext c: ctx.if_statement()) {
-            statements.add(visitIf_statement(c));
-        }
-        for (bloqParser.Loop_statementContext c: ctx.loop_statement()) {
-            statements.add(visitLoop_statement(c));
-        }
+
 
         return new LoopStatement(var, start, end, statements);
     }
 
+    @Override public InLoopStatement visitIn_loop_statement(bloqParser.In_loop_statementContext ctx) {
+        Node statement;
+
+        if (ctx.simple_assignment_statement() != null) {
+            statement = visitSimple_assignment_statement(ctx.simple_assignment_statement());
+        } else if (ctx.shape_assignment_statement() != null) {
+            statement = visitShape_assignment_statement(ctx.shape_assignment_statement());
+        } else if (ctx.call_statement() != null) {
+            statement = visitCall_statement(ctx.call_statement());
+        } else if (ctx.block_statement() != null) {
+            statement = visitBlock_statement(ctx.block_statement());
+        } else if (ctx.loop_statement() != null) {
+            statement = visitLoop_statement(ctx.loop_statement());
+        } else if (ctx.if_statement() != null) {
+            statement = visitIf_statement(ctx.if_statement());
+        } else {
+            return null;
+        }
+
+        return new InLoopStatement(statement);
+    }
+
     @Override public IfStatement visitIf_statement(bloqParser.If_statementContext ctx) {
-        List<Node> statements = new ArrayList<>();
+        List<InIfStatement> statements = new ArrayList<>();
 
         Condition cond = null;
         LinkedCondition linked_cond = null;
@@ -190,20 +224,33 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
             linked_cond = visitLinked_condition(ctx.linked_condition());
         }
 
-        for (bloqParser.Simple_assignment_statementContext c: ctx.simple_assignment_statement()) {
-            statements.add(visitSimple_assignment_statement(c));
-        }
-        for (bloqParser.Shape_assignment_statementContext c: ctx.shape_assignment_statement()) {
-            statements.add(visitShape_assignment_statement(c));
-        }
-        for (bloqParser.Block_statementContext c: ctx.block_statement()) {
-            statements.add(visitBlock_statement(c));
-        }
-        for (bloqParser.Call_statementContext c: ctx.call_statement()) {
-            statements.add(visitCall_statement(c));
+        for (bloqParser.In_if_statementContext c: ctx.in_if_statement()) {
+            statements.add(visitIn_if_statement(c));
         }
 
         return new IfStatement(cond, linked_cond, statements);
+    }
+
+    @Override public InIfStatement visitIn_if_statement(bloqParser.In_if_statementContext ctx) {
+        Node statement;
+
+        if (ctx.simple_assignment_statement() != null) {
+            statement = visitSimple_assignment_statement(ctx.simple_assignment_statement());
+        } else if (ctx.shape_assignment_statement() != null) {
+            statement = visitShape_assignment_statement(ctx.shape_assignment_statement());
+        } else if (ctx.call_statement() != null) {
+            statement = visitCall_statement(ctx.call_statement());
+        } else if (ctx.block_statement() != null) {
+            statement = visitBlock_statement(ctx.block_statement());
+        } else if (ctx.loop_statement() != null) {
+            statement = visitLoop_statement(ctx.loop_statement());
+        } else if (ctx.if_statement() != null) {
+            statement = visitIf_statement(ctx.if_statement());
+        } else {
+            return null;
+        }
+
+        return new InIfStatement(statement);
     }
 
     @Override public LinkedCondition visitLinked_condition(bloqParser.Linked_conditionContext ctx) {

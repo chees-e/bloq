@@ -9,9 +9,9 @@ import java.util.List;
 public class DefineStatement extends Node {
     private final Variable name;
     private final Args args;
-    private final List<Node> statements;
+    private final List<InFunctionStatement> statements;
 
-    public DefineStatement(Variable name, Args args, List<Node> statements){
+    public DefineStatement(Variable name, Args args, List<InFunctionStatement> statements){
         this.name = name;
         this.args = args;
         this.statements = statements;
@@ -25,7 +25,7 @@ public class DefineStatement extends Node {
         return name;
     }
 
-    public List<Node> getStatements() {
+    public List<InFunctionStatement> getStatements() {
         return statements;
     }
 

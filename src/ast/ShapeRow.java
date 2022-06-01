@@ -23,6 +23,6 @@ public class ShapeRow extends Node {
 
     @Override
     public int getType(){
-        return 18;
+        return 21;
     }
 }

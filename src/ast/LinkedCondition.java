@@ -30,6 +30,6 @@ public class LinkedCondition extends Node {
 
     @Override
     public int getType(){
-        return 12;
+        return 15;
     }
 }

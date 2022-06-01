@@ -7,17 +7,17 @@ import java.io.PrintWriter;
 import java.util.List;
 
 public class IfStatement extends Node {
-    private final List<Node> statements;
+    private final List<InIfStatement> statements;
     private final Condition cond;
     private final LinkedCondition linked_cond;
 
-    public IfStatement(Condition cond, LinkedCondition linked_cond, List<Node> statements){
+    public IfStatement(Condition cond, LinkedCondition linked_cond, List<InIfStatement> statements){
         this.statements = statements;
         this.cond = cond;
         this.linked_cond = linked_cond;
     }
 
-    public List<Node> getStatements() {
+    public List<InIfStatement> getStatements() {
         return statements;
     }
 

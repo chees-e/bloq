@@ -1,16 +1,15 @@
 package ast;
-import ast.evaluator.BloqVisitor;
-import libs.Node;
+        import ast.evaluator.BloqVisitor;
+        import libs.Node;
 
-import java.io.PrintWriter;
+        import java.io.PrintWriter;
 
-public class Statement extends Node {
+public class InFunctionStatement extends Node {
     private final Node statement;
 
-    public Statement(Node statement) {
+    public InFunctionStatement(Node statement) {
         this.statement = statement;
     }
-
     public Node getStatement() {
         return statement;
     }
@@ -22,6 +21,7 @@ public class Statement extends Node {
 
     @Override
     public int getType(){
-        return 23;
+        return 12;
     }
 }
+

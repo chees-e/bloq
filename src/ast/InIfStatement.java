@@ -1,19 +1,17 @@
 package ast;
-
 import ast.evaluator.BloqVisitor;
 import libs.Node;
 
 import java.io.PrintWriter;
 
-public class Variable extends Node {
-    private final String varStr;
+public class InIfStatement extends Node {
+    private final Node statement;
 
-    public Variable(String varStr){
-        this.varStr = varStr;
+    public InIfStatement(Node statement) {
+        this.statement = statement;
     }
-
-    public String getVarStr() {
-        return varStr;
+    public Node getStatement() {
+        return statement;
     }
 
     @Override
@@ -23,6 +21,6 @@ public class Variable extends Node {
 
     @Override
     public int getType(){
-        return 25;
+        return 13;
     }
 }

@@ -163,6 +163,15 @@ canvas.save("./output.png")
     }
 
     @Override
+    public Integer visit(InFunctionStatement s, PrintWriter printWriter) {
+        Node statement = s.getStatement();
+
+        statement.accept(this, printWriter);
+
+        return 0;
+    }
+
+    @Override
     public Integer visit(BlockStatement b, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
@@ -240,6 +249,15 @@ canvas.save("./output.png")
     }
 
     @Override
+    public Integer visit(InLoopStatement s, PrintWriter printWriter) {
+        Node statement = s.getStatement();
+
+        statement.accept(this, printWriter);
+
+        return 0;
+    }
+
+    @Override
     public Integer visit(IfStatement i, PrintWriter printWriter) {
         AddIndent(this.IndentLevel, printWriter);
 
@@ -264,6 +282,16 @@ canvas.save("./output.png")
 
         return 0;
     }
+
+    @Override
+    public Integer visit(InIfStatement s, PrintWriter printWriter) {
+        Node statement = s.getStatement();
+
+        statement.accept(this, printWriter);
+
+        return 0;
+    }
+
 
     @Override
     public Integer visit(LinkedCondition c, PrintWriter printWriter) {
