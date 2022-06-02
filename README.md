@@ -183,18 +183,18 @@ call name(1, 2)
 ---
 ## **Example**
 ```
-canvas: 5, 10
+canvas: 10, 5
 
 pattern:
-01;
-10;
-01;
-10;
-01;
+21;
+12;
+21;
+12;
+21;
 
 for i: 0 to 9 {
     if (i % 2 == 0) {
-        block: water
+        block: water, lava
         start: i, 0
         shape: pattern
     }

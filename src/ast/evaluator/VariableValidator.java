@@ -10,21 +10,21 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     private final Map<String, Expression> assignmentTable = new HashMap<>();
 
-    private final Map<String, List<Node>> functionTable = new HashMap<>();
+    private final Map<String, List<InFunctionStatement>> functionTable = new HashMap<>();
 
     private final List<String> illegalNames = Arrays.asList("call", "canvas", "block", "start", "shape", "name", "for",
             "if", "define");
-
-    private int nextLocation = 1;
 
     @Override
     public String visit(Program p, StringBuilder param) {
         System.out.println("Visiting program validation.");
         StringBuilder totalErrors = new StringBuilder();
         for (Node statement: p.getStatements()) {
-            String currError = statement.accept(this, param);
-            if (!Objects.equals(currError, "")) {
-                totalErrors.append(currError);
+            if (statement != null) {
+                String currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
             }
         }
         return totalErrors.toString();
@@ -68,18 +68,22 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     @Override
     public String visit(ShapeAssignmentStatement s, StringBuilder param) {
         System.out.println("Visiting shape assignment statement validation.");
+
+        StringBuilder totalErrors = new StringBuilder();
         String checkName = s.getName().accept(this, param);
         if (!Objects.equals(checkName, "")){
-            return checkName;
+            totalErrors.append(checkName);
         }
 
         String name = s.getName().getVarStr();
         if (functionTable.containsKey(name)) {
-            return "Error: variable name has already been used as a function name. \n";
+            totalErrors.append("Error: variable name has already been used as a function name. \n");
         }
 
+        checkShapeRows(param, totalErrors, s.getRows());
+
         assignmentTable.put(name, null);
-        return "";
+        return totalErrors.toString();
     }
 
     @Override
@@ -97,64 +101,207 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
         String checkName = d.getName().accept(this, param);
         String checkArgs = d.getArgs().accept(this, param);
+        StringBuilder totalErrors = new StringBuilder();
+        List<InFunctionStatement> statements = d.getStatements();
 
         if (!Objects.equals(checkName + checkArgs, "")){
-            return checkName + checkArgs;
+            totalErrors.append(checkName);
+            totalErrors.append(checkArgs);
         }
 
-        for (Node statement: d.getStatements()) {
-            String error = statement.accept(this, param);
-            if (!Objects.equals(error, "")) {
-                return error;
+        for (InFunctionStatement statement: statements) {
+            if (statement != null) {
+                String error = statement.accept(this, param);
+                if (!Objects.equals(error, "")) {
+                    totalErrors.append(error);
+                }
+            } else {
+                totalErrors.append("Syntax error in in function statement, please double check. \n");
             }
         }
 
         String name = d.getName().getVarStr();
         if (assignmentTable.containsKey(name)) {
-            return "Error: function name has already been used as a variable name. \n";
+            totalErrors.append("Error: function name has already been used as a variable name. \n");
         }
-        return "";
+
+        functionTable.put(name, statements);
+        return totalErrors.toString();
+    }
+
+    @Override
+    public String visit(InFunctionStatement s, StringBuilder param) {
+        System.out.println("Visiting in-function statement validation.");
+        Node statement = s.getStatement();
+        return statement.accept(this, param);
     }
 
     @Override
     public String visit(BlockStatement b, StringBuilder param) {
-        return "";
+        System.out.println("Visiting block statement validation.");
+        String errors = b.getName().accept(this, param);
+
+        if (b.getStart() != null) {
+            errors += b.getStart().accept(this, param);
+        }
+        if (b.getShape() != null) {
+            errors += b.getShape().accept(this, param);
+        }
+        return errors;
     }
 
     @Override
     public String visit(BlockStartStatement b, StringBuilder param) {
-        return "";
+        System.out.println("Visiting block start statement validation.");
+        return b.getX().accept(this, param) + b.getY().accept(this, param);
     }
 
     @Override
     public String visit(BlockShapeStatement b, StringBuilder param) {
         System.out.println("Visiting block shape statement validation.");
-        return b.getVar().accept(this, param);
+
+        StringBuilder totalErrors = new StringBuilder();
+        if (b.getVar() != null) {
+            String checkVar = b.getVar().accept(this, param);
+            if (!Objects.equals(checkVar, "")) {
+                totalErrors.append(checkVar);
+            }
+        }
+        if (b.getRows() != null) {
+            checkShapeRows(param, totalErrors, b.getRows());
+        }
+
+        return totalErrors.toString();
     }
 
     @Override
     public String visit(LoopStatement l, StringBuilder param) {
         System.out.println("Visiting loop statement validation.");
+
+        String checkVar = l.getVar().accept(this, param);
         StringBuilder totalErrors = new StringBuilder();
-        for (Node statement: l.getStatements()) {
-            String currError = statement.accept(this, param);
-            if (!Objects.equals(currError, "")) {
-                totalErrors.append(currError);
+        String start = l.getStart().getValueStr();
+        String end = l.getEnd().getValueStr();
+        boolean isStartInt = start.matches("-?\\d+");
+        boolean isEndInt = end.matches("-?\\d+");
+        if (isStartInt && isEndInt) {
+            if (Integer.parseInt(end) <= Integer.parseInt(start)) {
+                totalErrors.append("Error: loop end value must be greater than loop start value. \n");
+            }
+        }
+
+        if (!Objects.equals(checkVar, "")) {
+            totalErrors.append(checkVar);
+        }
+
+        for (InLoopStatement statement: l.getStatements()) {
+            if (statement != null) {
+                String currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
+            } else {
+                totalErrors.append("Syntax error in in-loop statement, please double check. \n");
+            }
+        }
+
+        return totalErrors.toString();
+    }
+
+    @Override
+    public String visit(InLoopStatement s, StringBuilder param) {
+        System.out.println("Visiting in-loop statement validation.");
+        Node statement = s.getStatement();
+        return statement.accept(this, param);
+    }
+
+    @Override
+    public String visit(IfStatement i, StringBuilder param) {
+        System.out.println("Visiting if statement validation.");
+
+        StringBuilder totalErrors = new StringBuilder();
+
+        // If statement will either have condition or linkedCondition
+        if (i.getCond() != null) {
+            totalErrors.append(i.getCond().accept(this, param));
+        } else if (i.getLinkedCond() != null){
+            totalErrors.append(i.getLinkedCond().accept(this, param));
+        }
+
+        String currError;
+        for (InIfStatement statement: i.getStatements()) {
+            if (statement != null) {
+                currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
+            } else {
+                totalErrors.append("Syntax error in in if statement, please double check. \n");
+            }
+        }
+
+        return totalErrors.toString();
+    }
+
+    @Override
+    public String visit(ElseStatement e, StringBuilder param) {
+        System.out.println("Visiting else statement validation.");
+        StringBuilder totalErrors = new StringBuilder();
+        String currError;
+        for (InIfStatement statement: e.getStatements()) {
+            if (statement != null) {
+                currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
+            } else {
+                totalErrors.append("Syntax error in in if statement, please double check. \n");
             }
         }
         return totalErrors.toString();
     }
 
     @Override
-    public String visit(IfStatement i, StringBuilder param) {
-        System.out.println("Visiting if statement validation.");
-        return i.getCond().accept(this, param);
+    public String visit(InIfStatement s, StringBuilder param) {
+        System.out.println("Visiting in/if statement validation.");
+        Node statement = s.getStatement();
+        return statement.accept(this, param);
+    }
+
+    @Override
+    public String visit(LinkedCondition c, StringBuilder param) {
+        System.out.println("Visiting linked condition statement validation.");
+
+        List<Condition> conditions = c.getConditions();
+        List<LogicOperator> operators = c.getOperators();
+        StringBuilder totalErrors = new StringBuilder();
+
+        if (conditions.size() != operators.size() + 1) {
+            totalErrors.append("Error: number of conditions in linked condition statement must be exactly 1 more than " +
+                    "the number of logical operators (&&, ||). \n");
+        }
+
+        String currError;
+        for (Condition cond: conditions) {
+            currError = cond.accept(this, param);
+            if (!Objects.equals(currError, "")) {
+                totalErrors.append(currError);
+            }
+        }
+
+        for (LogicOperator lo: operators) {
+            currError = lo.accept(this, param);
+            if (!Objects.equals(currError, "")) {
+                totalErrors.append(currError);
+            }
+        }
+
+        return totalErrors.toString();
     }
 
     @Override
     public String visit(Condition c, StringBuilder param) {
         System.out.println("Visiting condition statement validation.");
-        System.out.println(c.getExpressions());
         if (c.getExpressions().size() != 2) {
             return "Error in condition definition, you must compare 2 items. \n";
         }
@@ -188,6 +335,13 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(ShapeRow s, StringBuilder param) {
+        System.out.println("Visiting shape row validation.");
+
+        String row = s.getShaperow();
+        if (!row.matches("\\d+")) {
+            return "Error: shape row must only contain digits. \n";
+        }
+
         return "";
     }
 
@@ -196,7 +350,7 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         System.out.println("Visiting variable validation.");
         String name = v.getVarStr();
         if (illegalNames.contains(name)) {
-            return "Error: variable name cannot be one of the predefined keywords: " + illegalNames.toString();
+            return "Error: variable name cannot be one of the predefined keywords: " + illegalNames + ". \n";
         }
         return "";
     }
@@ -213,10 +367,32 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(Operator o, StringBuilder param) {
+        System.out.println("Visiting operator validation.");
         List<String> operators = Arrays.asList("+", "-", "*", "/", "%");
         if (!operators.contains(o.getOp())) {
             return "Error, operator is not supported. \n";
         }
         return "";
     }
+
+    @Override
+    public String visit(LogicOperator o, StringBuilder param) {
+        System.out.println("Visiting logic operator validation.");
+        List<String> operators = Arrays.asList("&&", "||");
+        if (!operators.contains(o.getOp())) {
+            return "Error, logic operator is not supported. \n";
+        }
+        return "";
+    }
+
+    private void checkShapeRows(StringBuilder param, StringBuilder totalErrors, List<ShapeRow> rows) {
+        String currError;
+        for (ShapeRow row: rows) {
+            currError = row.accept(this, param);
+            if (!Objects.equals(currError, "")) {
+                totalErrors.append(currError);
+            }
+        }
+    }
 }
+

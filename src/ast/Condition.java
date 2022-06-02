@@ -9,10 +9,12 @@ import java.util.List;
 public class Condition extends Node {
     private final List<Expression> expressions;
     private final Comparator comp;
+    private final boolean not;
 
-    public Condition(List<Expression> expressions, Comparator comp){
+    public Condition(List<Expression> expressions, Comparator comp, boolean not){
         this.expressions = expressions;
         this.comp = comp;
+        this.not = not;
     }
 
     public List<Expression> getExpressions() {
@@ -22,6 +24,8 @@ public class Condition extends Node {
     public Comparator getComp() {
         return comp;
     }
+
+    public Boolean isNegated() { return not; }
 
     @Override
     public <T, U> U accept(BloqVisitor<T, U> visitor, T t) {

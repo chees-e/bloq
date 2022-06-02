@@ -55,6 +55,7 @@ IF:'if';
 TO: 'to';
 DEFINE: 'define';
 CALL: 'call';
+ELSE: 'else';
 
 EQUAL: '==';
 GREATER: '>';
@@ -62,6 +63,10 @@ GREATEREQ: '>=';
 LESS: '<';
 LESSRQ: '<=';
 NOTEQ: '!=';
+
+AND: '&&';
+OR: '||';
+NOT: '!';
 
 PLUS: '+';
 MINUS: '-';

@@ -6,19 +6,19 @@ import libs.Node;
 import java.io.PrintWriter;
 
 public class BlockStartStatement extends Node {
-    public final Value x;
-    public final Value y;
+    public final Expression x;
+    public final Expression y;
 
-    public BlockStartStatement (Value x, Value y){
+    public BlockStartStatement (Expression x, Expression y){
         this.x = x;
         this.y = y;
     }
 
-    public Value getX() {
+    public Expression getX() {
         return x;
     }
 
-    public Value getY() {
+    public Expression getY() {
         return y;
     }
 

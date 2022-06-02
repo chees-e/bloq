@@ -53,28 +53,27 @@ simple_assignment_statement: variable COLON expression;
 shape_assignment_statement: variable COLON NEWLINE shape_row+;
 
 call_statement: CALL variable OPENBRACKET args CLOSEBRACKET;
-// define_statement: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* (in_function_statement NEWLINE+)+ CLOSECURLY;
-// in_function_statement: (block_statement | loop_statement | call_statement| if_statement); // allow calling function in definition
-define_statement: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | loop_statement | call_statement| if_statement) NEWLINE+)+ CLOSECURLY;
-
+define_statement: DEFINE variable OPENBRACKET args CLOSEBRACKET OPENCURLY NEWLINE* (in_function_statement NEWLINE+)+ CLOSECURLY;
+in_function_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement | loop_statement | if_statement );
 // block_statement: BLOCK COLON variable (NEWLINE block_substatement)*;
 // block_substatement: (block_start_statement | block_shape_statement | block_extra_statement); // allowing multiple block initializations
 block_statement: BLOCK COLON args (NEWLINE (block_start_statement | block_shape_statement))*;
 
 // This way you can include multiple blocks in one pattern
 // But it also means each block must be separted by a newline
-block_start_statement: START COLON value COMMA value;
+block_start_statement: START COLON expression COMMA expression;
 block_shape_statement: SHAPE COLON NEWLINE? (shape_row+ | variable);
 
-// loop_statement: FOR variable COLON value TO value OPENCURLY NEWLINE* (in_loop_statement NEWLINE+)+ CLOSECURLY;
-// in_loop_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement); // not allowing nested loops
-loop_statement: FOR OPENBRACKET? variable COLON value TO value CLOSEBRACKET? OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | if_statement | call_statement) NEWLINE+)+ CLOSECURLY;
+loop_statement: FOR OPENBRACKET? variable COLON value TO value CLOSEBRACKET? OPENCURLY NEWLINE* (in_loop_statement NEWLINE+)+ CLOSECURLY;
+in_loop_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement | loop_statement | if_statement);
 
-// if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY;
-// in_if_statement : (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement);
-if_statement: IF OPENBRACKET condition CLOSEBRACKET OPENCURLY NEWLINE* ((simple_assignment_statement | shape_assignment_statement | block_statement | call_statement) NEWLINE+)+ CLOSECURLY;
+if_statement: IF OPENBRACKET? (condition|linked_condition) CLOSEBRACKET? OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY else_statement?;
+else_statement: ELSE OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY; // I think its ok? to use in_if
+// Enabled nested if statements and loop if if statemetns
+in_if_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement | loop_statement | if_statement );  // ik its the same but its safer this way, more customizable too
 
-condition: expression comparator expression;
+linked_condition: (condition (logic_operator condition)+);
+condition: NOT? expression comparator expression;
 expression: (value (operator value)*); // Not allowing parentesses atm 
 
 args: (value (COMMA value)*);
@@ -83,3 +82,4 @@ variable: TEXT;
 value: NUMBER | TEXT;
 comparator: (EQUAL | GREATER | GREATEREQ | LESS | LESSRQ | NOTEQ) ;
 operator: (PLUS | MINUS | MULTIPLY | DIVIDE | MODULO);
+logic_operator: (AND | OR);

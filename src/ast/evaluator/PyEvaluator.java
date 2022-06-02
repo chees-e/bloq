@@ -153,11 +153,20 @@ canvas.save("./output.png")
 
         this.IndentLevel = this.IndentLevel + 1;
 
-        for (Node statement: d.getStatements()) {
+        for (InFunctionStatement statement: d.getStatements()) {
             statement.accept(this, printWriter);
         }
 
         this.IndentLevel = this.IndentLevel - 1;
+
+        return 0;
+    }
+
+    @Override
+    public Integer visit(InFunctionStatement s, PrintWriter printWriter) {
+        Node statement = s.getStatement();
+
+        statement.accept(this, printWriter);
 
         return 0;
     }
@@ -230,11 +239,20 @@ canvas.save("./output.png")
 
         this.IndentLevel = this.IndentLevel + 1;
 
-        for (Node statement: l.getStatements()) {
+        for (InLoopStatement statement: l.getStatements()) {
             statement.accept(this, printWriter);
         }
 
         this.IndentLevel = this.IndentLevel - 1;
+
+        return 0;
+    }
+
+    @Override
+    public Integer visit(InLoopStatement s, PrintWriter printWriter) {
+        Node statement = s.getStatement();
+
+        statement.accept(this, printWriter);
 
         return 0;
     }
@@ -244,13 +262,41 @@ canvas.save("./output.png")
         AddIndent(this.IndentLevel, printWriter);
 
         printWriter.write("if ");
-        i.getCond().accept(this, printWriter);
+        if (i.getCond() != null) {
+            i.getCond().accept(this, printWriter);
+        } else if (i.getLinkedCond() != null) {
+            i.getLinkedCond().accept(this, printWriter);
+        } else {
+            // TODO handle this? Dont this its possible
+        }
         printWriter.write(":");
         printWriter.println();
 
         this.IndentLevel = this.IndentLevel + 1;
 
-        for (Node statement: i.getStatements()) {
+        for (InIfStatement statement: i.getStatements()) {
+            statement.accept(this, printWriter);
+        }
+
+        this.IndentLevel = this.IndentLevel - 1;
+
+        if (i.getElse() != null) {
+            i.getElse().accept(this, printWriter);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public Integer visit(ElseStatement e, PrintWriter printWriter) {
+        AddIndent(this.IndentLevel, printWriter);
+
+        printWriter.write("else: ");
+        printWriter.println();
+
+        this.IndentLevel = this.IndentLevel + 1;
+
+        for (InIfStatement statement: e.getStatements()) {
             statement.accept(this, printWriter);
         }
 
@@ -260,7 +306,34 @@ canvas.save("./output.png")
     }
 
     @Override
+    public Integer visit(InIfStatement s, PrintWriter printWriter) {
+        Node statement = s.getStatement();
+
+        statement.accept(this, printWriter);
+
+        return 0;
+    }
+
+
+    @Override
+    public Integer visit(LinkedCondition c, PrintWriter printWriter) {
+        List<Condition> conditions = c.getConditions();
+        List<LogicOperator> operators = c.getOperators();
+
+        conditions.get(0).accept(this, printWriter);
+        for (int i = 0; i < operators.size(); i++) {
+            operators.get(i).accept(this, printWriter);
+            conditions.get(i+1).accept(this, printWriter);
+        }
+
+        return 0;
+    }
+
+    @Override
     public Integer visit(Condition c, PrintWriter printWriter) {
+        if (c.isNegated()) {
+            printWriter.write("not ");
+        }
         c.getExpressions().get(0).accept(this,printWriter);
         c.getComp().accept(this, printWriter);
         c.getExpressions().get(1).accept(this,printWriter);
@@ -320,6 +393,27 @@ canvas.save("./output.png")
     @Override
     public Integer visit(Operator o, PrintWriter printWriter) {
         printWriter.write(o.getOp());
+        return 0;
+    }
+
+    @Override
+    public Integer visit(LogicOperator o, PrintWriter printWriter) {
+        String op = o.getOp();
+        String pythonop;
+
+        switch (op) {
+            case ("&&"):
+                pythonop = " and ";
+                break;
+            case ("||"):
+                pythonop = " or ";
+                break;
+            default:
+                pythonop = " "; // TODO Handle this
+        }
+
+        printWriter.write(pythonop);
+
         return 0;
     }
 }

@@ -80,7 +80,7 @@ public class EditorController {
             System.out.println("Done evaluation");
 
             // TODO: Double check python or python3, if on ARM macOS, may need to add 'arch -arm64' before python
-            Process process = Runtime.getRuntime().exec("arch -arm64 python3 ./output.py");
+            Process process = Runtime.getRuntime().exec("python3 ./output.py");
 
             int exitcode = process.waitFor();
             System.out.println(exitcode);
