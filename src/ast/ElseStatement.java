@@ -1,17 +1,19 @@
 package ast;
+
 import ast.evaluator.BloqVisitor;
 import libs.Node;
+
 import java.io.PrintWriter;
 import java.util.List;
 
-public class Program extends Node {
-    private final List<Statement> statements;
+public class ElseStatement extends Node {
+    private final List<InIfStatement> statements;
 
-    public Program(List<Statement> statements) {
+    public ElseStatement(List<InIfStatement> statements){
         this.statements = statements;
     }
 
-    public List<Statement> getStatements() {
+    public List<InIfStatement> getStatements() {
         return statements;
     }
 
@@ -22,6 +24,6 @@ public class Program extends Node {
 
     @Override
     public int getType(){
-        return 20;
+        return 10;
     }
 }

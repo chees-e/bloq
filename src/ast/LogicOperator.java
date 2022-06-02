@@ -23,6 +23,6 @@ public class LogicOperator extends Node {
 
     @Override
     public int getType(){
-        return 16;
+        return 17;
     }
 }

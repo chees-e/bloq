@@ -215,6 +215,7 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
 
         Condition cond = null;
         LinkedCondition linked_cond = null;
+        ElseStatement elseStatement = null;
 
         if (ctx.condition() != null) {
             cond = visitCondition(ctx.condition());
@@ -228,7 +229,22 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
             statements.add(visitIn_if_statement(c));
         }
 
-        return new IfStatement(cond, linked_cond, statements);
+        if (ctx.else_statement() != null) {
+            elseStatement = visitElse_statement(ctx.else_statement());
+        }
+
+        return new IfStatement(cond, linked_cond, statements, elseStatement);
+    }
+
+    @Override
+    public ElseStatement visitElse_statement(bloqParser.Else_statementContext ctx) {
+        List<InIfStatement> statements = new ArrayList<>();
+
+        for (bloqParser.In_if_statementContext c: ctx.in_if_statement()) {
+            statements.add(visitIn_if_statement(c));
+        }
+
+        return new ElseStatement(statements);
     }
 
     @Override public InIfStatement visitIn_if_statement(bloqParser.In_if_statementContext ctx) {
@@ -269,12 +285,17 @@ public class ParseToASTVisitor extends bloqParserBaseVisitor<Node> {
 
     @Override public Condition visitCondition(bloqParser.ConditionContext ctx) {
         List<Expression> expressions = new ArrayList<>();
+        boolean not = false; // means there is not a not
 
         for (bloqParser.ExpressionContext c: ctx.expression()) {
             expressions.add(visitExpression(c));
         }
 
-        return new Condition(expressions, visitComparator(ctx.comparator()));
+        if (ctx.NOT() != null) {
+            not = true;
+        }
+
+        return new Condition(expressions, visitComparator(ctx.comparator()), not);
     }
 
     @Override public Expression visitExpression(bloqParser.ExpressionContext ctx) {

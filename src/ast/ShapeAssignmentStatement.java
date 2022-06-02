@@ -30,6 +30,6 @@ public class ShapeAssignmentStatement extends Node {
 
     @Override
     public int getType(){
-        return 20;
+        return 21;
     }
 }

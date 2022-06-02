@@ -67,12 +67,13 @@ block_shape_statement: SHAPE COLON NEWLINE? (shape_row+ | variable);
 loop_statement: FOR OPENBRACKET? variable COLON value TO value CLOSEBRACKET? OPENCURLY NEWLINE* (in_loop_statement NEWLINE+)+ CLOSECURLY;
 in_loop_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement | loop_statement | if_statement);
 
-if_statement: IF OPENBRACKET? (condition|linked_condition) CLOSEBRACKET? OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY;
+if_statement: IF OPENBRACKET? (condition|linked_condition) CLOSEBRACKET? OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY else_statement?;
+else_statement: ELSE OPENCURLY NEWLINE* (in_if_statement NEWLINE+)+ CLOSECURLY; // I think its ok? to use in_if
 // Enabled nested if statements and loop if if statemetns
 in_if_statement: (simple_assignment_statement | shape_assignment_statement | block_statement | call_statement | loop_statement | if_statement );  // ik its the same but its safer this way, more customizable too
 
 linked_condition: (condition (logic_operator condition)+);
-condition: expression comparator expression;
+condition: NOT? expression comparator expression;
 expression: (value (operator value)*); // Not allowing parentesses atm 
 
 args: (value (COMMA value)*);

@@ -29,6 +29,6 @@ public class SimpleAssignmentStatement extends Node {
 
     @Override
     public int getType(){
-        return 22;
+        return 23;
     }
 }

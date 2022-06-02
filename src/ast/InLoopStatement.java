@@ -21,6 +21,6 @@ public class InLoopStatement extends Node {
 
     @Override
     public int getType(){
-        return 14;
+        return 15;
     }
 }

@@ -230,6 +230,13 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     }
 
     @Override
+    public String visit(ElseStatement e, StringBuilder param) {
+        // TODO
+
+        return "";
+    }
+
+    @Override
     public String visit(InIfStatement s, StringBuilder param) {
         System.out.println("Visiting in/if statement validation.");
         Node statement = s.getStatement();

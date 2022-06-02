@@ -97,6 +97,12 @@ public interface bloqParserVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitIf_statement(bloqParser.If_statementContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link bloqParser#else_statement}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitElse_statement(bloqParser.Else_statementContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link bloqParser#in_if_statement}.
 	 * @param ctx the parse tree
 	 * @return the visitor result

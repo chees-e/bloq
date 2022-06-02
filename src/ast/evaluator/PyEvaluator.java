@@ -280,6 +280,28 @@ canvas.save("./output.png")
 
         this.IndentLevel = this.IndentLevel - 1;
 
+        if (i.getElse() != null) {
+            i.getElse().accept(this, printWriter);
+        }
+
+        return 0;
+    }
+
+    @Override
+    public Integer visit(ElseStatement e, PrintWriter printWriter) {
+        AddIndent(this.IndentLevel, printWriter);
+
+        printWriter.write("else: ");
+        printWriter.println();
+
+        this.IndentLevel = this.IndentLevel + 1;
+
+        for (InIfStatement statement: e.getStatements()) {
+            statement.accept(this, printWriter);
+        }
+
+        this.IndentLevel = this.IndentLevel - 1;
+
         return 0;
     }
 
@@ -309,6 +331,9 @@ canvas.save("./output.png")
 
     @Override
     public Integer visit(Condition c, PrintWriter printWriter) {
+        if (c.isNegated()) {
+            printWriter.write("not ");
+        }
         c.getExpressions().get(0).accept(this,printWriter);
         c.getComp().accept(this, printWriter);
         c.getExpressions().get(1).accept(this,printWriter);

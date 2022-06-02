@@ -22,6 +22,6 @@ public class Statement extends Node {
 
     @Override
     public int getType(){
-        return 23;
+        return 24;
     }
 }

@@ -23,6 +23,6 @@ public class Operator extends Node {
 
     @Override
     public int getType(){
-        return 18;
+        return 19;
     }
 }

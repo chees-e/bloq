@@ -30,6 +30,6 @@ public class Expression extends Node {
 
     @Override
     public int getType(){
-        return 10;
+        return 11;
     }
 }

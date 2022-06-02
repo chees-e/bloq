@@ -33,6 +33,8 @@ public interface BloqVisitor<T, U> {
 
     U visit(IfStatement i, T param);
 
+    U visit(ElseStatement s, T param);
+
     U visit(InIfStatement s, T param);
 
     U visit(LinkedCondition c, T param);

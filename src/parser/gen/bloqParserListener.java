@@ -150,6 +150,16 @@ public interface bloqParserListener extends ParseTreeListener {
 	 */
 	void exitIf_statement(bloqParser.If_statementContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link bloqParser#else_statement}.
+	 * @param ctx the parse tree
+	 */
+	void enterElse_statement(bloqParser.Else_statementContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link bloqParser#else_statement}.
+	 * @param ctx the parse tree
+	 */
+	void exitElse_statement(bloqParser.Else_statementContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link bloqParser#in_if_statement}.
 	 * @param ctx the parse tree
 	 */

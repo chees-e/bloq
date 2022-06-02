@@ -21,7 +21,7 @@ public class InFunctionStatement extends Node {
 
     @Override
     public int getType(){
-        return 12;
+        return 13;
     }
 }
 
