@@ -107,6 +107,8 @@ The code above will product the following image:
 
 #
 ### Using Variables
+Bloq supports the following types of variable assignments:
+
 Creating a integer variable named *name* with value *value*:
 
 ```
@@ -121,7 +123,6 @@ row1;
 row2;
 ...;
 ```
-Currently Bloq only supports these two types of variable assignments.
 
 #
 ### Using Loops
@@ -132,19 +133,20 @@ for i: 1 to 10 {
     statement
 }
 ```
-Statement can be either a variable assignment, a block placement, or a function call.  
-Nest for loops are currently unsupported.
+Statement can be either a variable assignment, a block placement, function call, if-else statement or another loop. 
 
 #
 ### Using Conditionals
-Executes a statement(s) if *condition* is true:
+Executes a statement(s) if *condition* is true, can also have else for when the *condition* is false (optional):
 ```
 if (condition) {
     statement
+} else {
+    statement
 }
 ```
-Condition is a comparison between two mathematical expressions.  
-Bloq currently only supports single condition if statements.  
+Condition is a comparison between two mathematical expressions. You can also link conditions using the logic operators (&&, ||). You can also negate a condition with !*condition*.
+
 Supported comparisons:  
 | Comparison | Symbol |
 | ---------- | ---------- |
@@ -163,6 +165,14 @@ Supported operations for mathematical expressions:
 | Multiplication | * |
 | Division | / |
 | Modulo | % |
+
+Logic operators:
+| Operator | Symbol |
+| --- | --- |
+| AND | && |
+| OR | \|\| |
+| NOT | ! |
+
 
 #
 ### Using Functions
@@ -203,12 +213,6 @@ for i: 0 to 9 {
 ![example_1](images/example_1.png)
 
 ---
-
-#
-### Features coming soon
-Nested for loops  
-Multiple conditions in if statement  
-if/else statements  
 
 
 ## **Contributors**
