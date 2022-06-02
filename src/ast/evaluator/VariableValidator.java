@@ -176,8 +176,8 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         StringBuilder totalErrors = new StringBuilder();
         String start = l.getStart().getValueStr();
         String end = l.getEnd().getValueStr();
-        boolean isStartInt = start.matches("-?[0-9]+");
-        boolean isEndInt = end.matches("-?[0-9]+");
+        boolean isStartInt = start.matches("-?\\d+");
+        boolean isEndInt = end.matches("-?\\d+");
         if (isStartInt && isEndInt) {
             if (Integer.parseInt(end) <= Integer.parseInt(start)) {
                 totalErrors.append("Error: loop end value must be greater than loop start value. \n");
@@ -231,9 +231,16 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
     @Override
     public String visit(ElseStatement e, StringBuilder param) {
-        // TODO
-
-        return "";
+        System.out.println("Visiting else statement validation.");
+        StringBuilder totalErrors = new StringBuilder();
+        String currError;
+        for (InIfStatement statement: e.getStatements()) {
+            currError = statement.accept(this, param);
+            if (!Objects.equals(currError, "")) {
+                totalErrors.append(currError);
+            }
+        }
+        return totalErrors.toString();
     }
 
     @Override

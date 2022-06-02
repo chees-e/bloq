@@ -1,4 +1,4 @@
-// Generated from bloqParser.g4 by ANTLR 4.10.1
+// Generated from /Users/jessicazhan/Projects/cpsc410_project1_team9/src/parser/bloqParser.g4 by ANTLR 4.10.1
 
 package parser.gen;
 
@@ -502,7 +502,7 @@ public class bloqParser extends Parser {
 				setState(91); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,4,_ctx);
-			} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+			} while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER );
 			}
 		}
 		catch (RecognitionException re) {
@@ -845,7 +845,7 @@ public class bloqParser extends Parser {
 			setState(141);
 			_errHandler.sync(this);
 			_alt = getInterpreter().adaptivePredict(_input,10,_ctx);
-			while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER ) {
+			while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER ) {
 				if ( _alt==1 ) {
 					{
 					{
@@ -1025,7 +1025,7 @@ public class bloqParser extends Parser {
 					setState(158); 
 					_errHandler.sync(this);
 					_alt = getInterpreter().adaptivePredict(_input,12,_ctx);
-				} while ( _alt!=2 && _alt!=org.antlr.v4.runtime.atn.ATN.INVALID_ALT_NUMBER );
+				} while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER );
 				}
 				break;
 			case TEXT:
