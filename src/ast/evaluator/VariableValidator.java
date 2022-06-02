@@ -174,12 +174,14 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
 
         String checkVar = l.getVar().accept(this, param);
         StringBuilder totalErrors = new StringBuilder();
-        int start = l.getStart().getValueInt();
-        int end = l.getEnd().getValueInt();
-
-        // TODO: check if this works for variables
-        if (end <= start) {
-            totalErrors.append("Error: loop end value must be greater than loop start value. \n");
+        String start = l.getStart().getValueStr();
+        String end = l.getEnd().getValueStr();
+        boolean isStartInt = start.matches("-?[0-9]+");
+        boolean isEndInt = end.matches("-?[0-9]+");
+        if (isStartInt && isEndInt) {
+            if (Integer.parseInt(end) <= Integer.parseInt(start)) {
+                totalErrors.append("Error: loop end value must be greater than loop start value. \n");
+            }
         }
 
         if (!Objects.equals(checkVar, "")) {
