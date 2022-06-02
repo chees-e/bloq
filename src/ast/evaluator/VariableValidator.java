@@ -20,9 +20,11 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         System.out.println("Visiting program validation.");
         StringBuilder totalErrors = new StringBuilder();
         for (Node statement: p.getStatements()) {
-            String currError = statement.accept(this, param);
-            if (!Objects.equals(currError, "")) {
-                totalErrors.append(currError);
+            if (statement != null) {
+                String currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
             }
         }
         return totalErrors.toString();
@@ -108,9 +110,13 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         }
 
         for (InFunctionStatement statement: statements) {
-            String error = statement.accept(this, param);
-            if (!Objects.equals(error, "")) {
-                totalErrors.append(error);
+            if (statement != null) {
+                String error = statement.accept(this, param);
+                if (!Objects.equals(error, "")) {
+                    totalErrors.append(error);
+                }
+            } else {
+                totalErrors.append("Syntax error in in function statement, please double check. \n");
             }
         }
 
@@ -189,9 +195,13 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         }
 
         for (InLoopStatement statement: l.getStatements()) {
-            String currError = statement.accept(this, param);
-            if (!Objects.equals(currError, "")) {
-                totalErrors.append(currError);
+            if (statement != null) {
+                String currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
+            } else {
+                totalErrors.append("Syntax error in in-loop statement, please double check. \n");
             }
         }
 
@@ -214,15 +224,19 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         // If statement will either have condition or linkedCondition
         if (i.getCond() != null) {
             totalErrors.append(i.getCond().accept(this, param));
-        } else {
+        } else if (i.getLinkedCond() != null){
             totalErrors.append(i.getLinkedCond().accept(this, param));
         }
 
         String currError;
         for (InIfStatement statement: i.getStatements()) {
-            currError = statement.accept(this, param);
-            if (!Objects.equals(currError, "")) {
-                totalErrors.append(currError);
+            if (statement != null) {
+                currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
+            } else {
+                totalErrors.append("Syntax error in in if statement, please double check. \n");
             }
         }
 
@@ -235,9 +249,13 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         StringBuilder totalErrors = new StringBuilder();
         String currError;
         for (InIfStatement statement: e.getStatements()) {
-            currError = statement.accept(this, param);
-            if (!Objects.equals(currError, "")) {
-                totalErrors.append(currError);
+            if (statement != null) {
+                currError = statement.accept(this, param);
+                if (!Objects.equals(currError, "")) {
+                    totalErrors.append(currError);
+                }
+            } else {
+                totalErrors.append("Syntax error in in if statement, please double check. \n");
             }
         }
         return totalErrors.toString();
@@ -284,7 +302,6 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     @Override
     public String visit(Condition c, StringBuilder param) {
         System.out.println("Visiting condition statement validation.");
-        System.out.println(c.getExpressions());
         if (c.getExpressions().size() != 2) {
             return "Error in condition definition, you must compare 2 items. \n";
         }
