@@ -133,8 +133,15 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
     @Override
     public String visit(BlockStatement b, StringBuilder param) {
         System.out.println("Visiting block statement validation.");
-        return b.getShape().accept(this, param) + b.getStart().accept(this, param)
-                + b.getName().accept(this, param);
+        String errors = b.getName().accept(this, param);
+
+        if (b.getStart() != null) {
+            errors += b.getStart().accept(this, param);
+        }
+        if (b.getShape() != null) {
+            errors += b.getShape().accept(this, param);
+        }
+        return errors;
     }
 
     @Override
@@ -148,12 +155,15 @@ public class VariableValidator implements BloqVisitor<StringBuilder, String>{
         System.out.println("Visiting block shape statement validation.");
 
         StringBuilder totalErrors = new StringBuilder();
-        String checkVar = b.getVar().accept(this, param);
-        if (!Objects.equals(checkVar, "")) {
-            totalErrors.append(checkVar);
+        if (b.getVar() != null) {
+            String checkVar = b.getVar().accept(this, param);
+            if (!Objects.equals(checkVar, "")) {
+                totalErrors.append(checkVar);
+            }
         }
-
-        checkShapeRows(param, totalErrors, b.getRows());
+        if (b.getRows() != null) {
+            checkShapeRows(param, totalErrors, b.getRows());
+        }
 
         return totalErrors.toString();
     }
